@@ -12,4 +12,9 @@ class Department extends Model
     public function ministry(){
         return $this->belongsTo(Ministry::class);
     }
+
+    // a department has many district offices
+    public function district_offices(){
+        return $this->hasMany(DistrictOffice::class);
+    }
 }
