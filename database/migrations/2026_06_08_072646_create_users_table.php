@@ -18,12 +18,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone')->unique();
             $table->string('designation');
-            $table->int('ministry_id');
-            $table->int('role_id');
-            $table->string('username');
+            $table->foreignId('office_id')->constrained('offices');
+            $table->integer('role_id')->default(1);
+            $table->string('username')->unique();
             $table->string('hash_password');
-            //$table->string('sign_path');
-            $table->timestamps('created_at');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->timestamps();
         });
     }
 

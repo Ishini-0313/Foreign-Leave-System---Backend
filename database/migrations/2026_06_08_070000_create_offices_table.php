@@ -13,13 +13,12 @@ return new class extends Migration
     {
         Schema::create('offices', function (Blueprint $table) {
             $table->id();
-            $table->string('office_name');
-            $table->int('district_office_id');
-            $table->int('dept_id');
-            $table->int('ministry_id');
-            $table->int('workflow_template_id');
-            $table->boolean('is_active');
-            $table->timestamps('created_at');
+            $table->string('name')->unique();
+            $table->enum('type', ['Ministry', 'Department', 'District Office', 'Office']);
+            $table->integer('parent_office_id')->nullable();
+            $table->integer('workflow_template_id')->nullable();
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->timestamps();
         });
     }
 
