@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('available_leave_infos', function (Blueprint $table) {
             $table->id();
-            $table->int('application_id');
-            $table->int('leave_type');
-            $table->int('months');
-            $table->int('days');
+            $table->foreignId('application_id')->constrained()->cascadeOnDelete();
+            $table->integer('leave_type');
+            $table->integer('months');
+            $table->integer('days');
             $table->timestamps();
         });
     }

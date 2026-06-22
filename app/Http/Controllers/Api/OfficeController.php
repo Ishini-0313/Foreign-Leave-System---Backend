@@ -35,4 +35,23 @@ class OfficeController extends Controller
     public function index(){
         return Office::select('id', 'name')->orderBy('id')->get();
     }
+
+    public function getMinistries(){
+        return Office::select('id', 'name')->where('type', 'Ministry')->orderBy('name')->get();
+    }
+
+    // get departments,district offices and offices(not ministries)
+    public function getDept_distOffices_offices(){
+        return Office::select('id', 'name')->where('type', '!=', 'Ministry')->orderBy('name')->get();
+    }
+
+    //get child offices under a ministry
+    public function get_sub_office_by_ministry(Request $request){
+        return Office::select('id', 'name')->where('parent_office_id', $request->parent_office_id)->get();
+    }
+
+    // get office by id
+    public function getOfficeById(Request $request){
+        return Office::select('name')->where('id', $request->id)->first();
+    }
 }

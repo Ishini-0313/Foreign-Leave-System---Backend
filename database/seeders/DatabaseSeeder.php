@@ -9,6 +9,8 @@ use Database\Seeders\MinistrySeeder;
 use Database\Seeders\DeptSeeder;
 use Database\Seeders\DistrictOfficeSeeder;
 use Database\Seeders\OfficeSeeder;
+use Database\Seeders\GradeSeeder;
+use Database\Seeders\ServiceSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -30,7 +32,9 @@ class DatabaseSeeder extends Seeder
             MinistrySeeder::class,
             DeptSeeder::class,
             DistrictOfficeSeeder::class,
-            OfficeSeeder::class
+            OfficeSeeder::class,
+            GradeSeeder::class,
+            ServiceSeeder::class
         ]);
     }
 }
