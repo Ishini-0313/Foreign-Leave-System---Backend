@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('previous_travels', function (Blueprint $table) {
             $table->id();
-            $table->int('application_id');
-            $table->int('year');
+            $table->foreignId('application_id')->constrained()->cascadeOnDelete();
+            $table->integer('year');
             $table->string('purpose');
             $table->string('period');
             $table->string('country');

@@ -13,12 +13,23 @@ return new class extends Migration
     {
         Schema::create('g_o_s_l_funds', function (Blueprint $table) {
             $table->id();
-            $table->int('application_id');
-            $table->string('air_travel');
-            $table->string('subsistence');
-            $table->string('course_fees');
-            $table->string('additional_expenses');
-            $table->string('other_personal_expenses');
+            $table->foreignId('application_id')->constrained()->cascadeOnDelete();
+
+            $table->boolean('air_travel_selected');
+            $table->decimal('air_travel_amount', 12, 2)->nullable();
+
+            $table->boolean('subsistence_selected');
+            $table->decimal('subsistence_amount', 12, 2)->nullable();
+
+            $table->boolean('course_fees_selected');
+            $table->decimal('course_fees_amount', 12, 2)->nullable();
+
+            $table->boolean('additional_expenses_selected');
+            $table->decimal('additional_expenses_amount', 12, 2)->nullable();
+
+            $table->boolean('other_personal_expenses_selected');
+            $table->decimal('other_personal_expenses_amount', 12, 2)->nullable();
+
             $table->timestamps();
         });
     }
