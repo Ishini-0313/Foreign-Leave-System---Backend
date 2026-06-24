@@ -12,7 +12,7 @@ Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
 
 // get all institutes
-Route::get('/offices', [OfficeController::class, 'index']);
+Route::get('/office', [OfficeController::class, 'index']);
 
 // get all services
 Route::get('/services', [ServiceController::class, 'index']);
@@ -49,3 +49,5 @@ Route::middleware('auth:sanctum')->get(
 );
 
 Route::get('/office-by-id', [OfficeController::class, 'getOfficeById']);
+
+Route::get('/grade-by-id', [GradeController::class, 'getClassById']);
