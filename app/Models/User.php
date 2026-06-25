@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Office;
+use App\Models\Role;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -20,5 +21,9 @@ class User extends Authenticatable
     //one user belongs to one office
     public function office(){
         return $this->belongsTo(Office::class);
+    }
+
+    public function role(){
+        return $this->belongsTo(Role::class);
     }
 }

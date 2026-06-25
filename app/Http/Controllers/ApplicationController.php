@@ -9,16 +9,35 @@ use App\Models\Previous_travel;
 use App\Models\Document;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Workflow_steps;
+use App\Services\WorkflowService;
 
 class ApplicationController extends Controller
 {
-    public function store(Request $request){
+    public function store(Request $request, WorkflowService $workflowService){
         DB::beginTransaction();
         
         try{
+            $user = auth()->user();
+            $office = $user->office;
+
+            if(!$office){
+                throw new \Exception('User office not assigned');
+            }
+
+            $workflow_id = $office->workflow_template_id;
+
+            $first_step = Workflow_steps::where('workflow_id',$workflow_id)->orderBy('sequence_no')->first();
+
             $application = Application::create([
                 "application_no" => 'FLM-' . now()->format('YmdHis'),
                 "user_id" => auth()->id(),
+
+                "workflow_id" => $workflow_id,
+                "current_step_id" => $first_step->id,
+
+                "status" => "Pending",
+
                 "name" => $request->name,
                 "position" => $request->position,
                 "service_id" => $request->service_id,
@@ -59,6 +78,8 @@ class ApplicationController extends Controller
                 "cost_maintanence_abroad" => $request->cost_maintanence_abroad,
                 "relationship_of_person_meeting_expenditure"=> $request->relationship_of_person_meeting_expenditure,
             ]);
+
+            $workflowService->assignFirstStep($application);
 
             // Save GOSL Funds
             $funds = json_decode($request->goslFunds, true);
@@ -168,8 +189,11 @@ class ApplicationController extends Controller
             DB::rollBack();
 
             return response()->json([
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile()
             ], 500);
+
         }
         
     }

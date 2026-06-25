@@ -15,8 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('application_no');
             $table->integer('user_id');
-            // $table->integer('workflow_id');
-            // $table->integer('current_step_id');
+
+            $table->foreignId('workflow_id')->constrained('workflow_templates');
+            $table->integer('current_step_id');
+
+            $table->foreignId('current_assigned_user_id')->nullable()->constrained('users');
+            $table->foreignId('current_assigned_office_id')->nullable()->constrained('offices');
+
+            $table->string('status');
+
+            $table->Date('approved_at')->nullable();
 
             $table->string('name');
             $table->string('position');

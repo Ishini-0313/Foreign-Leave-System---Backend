@@ -3,15 +3,28 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\Workflow_template;
+use App\Models\GOSL_funds;
+use App\Models\Previous_travel;
+use App\Models\Document;
 
 class Application extends Model
 {
     protected $fillable = [
         'application_no',
         'user_id',
-        // 'workflow_id',
-        // 'current_step_id',
 
+        'workflow_id',
+        'current_step_id',
+
+        'current_assigned_user_id',
+        'current_assigned_office_id',
+        
+        'status',
+
+        'approved_at',
+        
         'name',
         'position',
         'service_id',
@@ -54,4 +67,25 @@ class Application extends Model
 
         'signature_path'
     ];
+
+    public function applicant(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function current_step(){
+        return $this->belongsTo(Workflow_template::class, 'current_step_id');
+    }
+
+    public function goslFunds(){
+        return $this->hasMany(GOSL_funds::class);
+    }
+
+    public function previousTravels(){
+        return $this->hasMany(Previous_travel::class);
+    }
+
+    public function documents(){
+        return $this->hasMany(Document::class);
+    }
 }
+

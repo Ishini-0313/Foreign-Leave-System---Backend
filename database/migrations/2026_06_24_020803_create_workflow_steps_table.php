@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('workflow_id')->constrained('workflow_templates');
             $table->integer('sequence_no');
-            $table->foreignId('office_id')->constrained('offices');
+           // $table->foreignId('office_id')->constrained('offices');
+            $table->string('office_reference');
             $table->foreignId('role_id')->constrained('roles');
             $table->timestamps();
         });
