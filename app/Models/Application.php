@@ -8,6 +8,7 @@ use App\Models\Workflow_template;
 use App\Models\GOSL_funds;
 use App\Models\Previous_travel;
 use App\Models\Document;
+use App\Models\Application_workflow_histories;
 
 class Application extends Model
 {
@@ -86,6 +87,10 @@ class Application extends Model
 
     public function documents(){
         return $this->hasMany(Document::class);
+    }
+
+    public function workflowHistories(){
+        return $this->hasMany(Application_workflow_histories::class);
     }
 }
 
