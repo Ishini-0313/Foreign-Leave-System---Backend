@@ -22,4 +22,40 @@ class OfficerController extends Controller
             'message' => 'Approved'
         ]);
     }
+
+    public function forward(Request $request, Application $application, WorkflowService $workflowService){
+        $request->validate([
+            'remarks' => 'nullable|string'
+        ]);
+
+        if($application->current_assigned_user_id != auth()->id()){
+            return response()->json([
+                'message' => 'This application is not assigned to you.'
+            ], 403);
+        }
+
+        $workflowService->forward($application, auth()->user(), $request->remarks);
+
+        return response()->json([
+            'message'=>'Application forwarded successfully.'
+        ]);
+    }
+
+    public function return(Request $request, Application $application, WorkflowService $workflowService){
+        $request->validate([
+            'remarks' => 'nullable|string'
+        ]);
+
+        if($application->current_assigned_user_id != auth()->id()){
+            return response()->json([
+                'message' => 'This application is not assigned to you.'
+            ], 403);
+        }
+
+        $workflowService->return($application, auth()->user(), $request->remarks);
+
+        return response()->json([
+            'message'=>'Application return successfully.'
+        ]);
+    }
 }
