@@ -38,12 +38,12 @@ class WorkflowService{
         return $user;
     }
 
-    public function approve(Application $application, User $user, ?string $remarks){
+    public function forward(Application $application, User $user, ?string $remarks){
         Application_workflow_histories::create([
             'application_id' => $application->id,
             'workflow_step_id' => $application->current_step_id,
-            'acted_by' => $user->id,
-            'action' => 'Approved',
+            'user_id' => $user->id,
+            'action' => 'Forwarded',
             'remarks' => $remarks
         ]);
 
@@ -54,7 +54,9 @@ class WorkflowService{
         if(!$nextStep){
             $application->update([
                 'status' => 'Approved',
-                'approved_at' => now()
+                'approved_at' => now(),
+                'current_assigned_user_id'=>null,
+                'current_assigned_office_id'=>null
             ]);
 
             return;
@@ -69,7 +71,34 @@ class WorkflowService{
         ]);
     }
 
-    
+    public function return(Application $application, User $user, ?string $remarks){
+        Application_workflow_histories::create([
+            'application_id' => $application->id,
+            'workflow_step_id' => $application->current_step_id,
+            'user_id' => $user->id,
+            'action' => 'Returned',
+            'remarks' => $remarks
+        ]);
+
+        $currentStep = $application->current_step;
+
+        $previousStep = Workflow_steps::where('workflow_id', $application->workflow_id)->where('sequence_no', $currentStep->sequence_no - 1)->first();
+
+        if (!$previousStep) {
+            throw new \Exception("Cannot return from the first workflow step.");
+        }
+
+        // Find officer for previous step
+        $previousOfficer = $this->resolveOfficer($application, $previousStep);
+
+        // Update application
+        $application->update([
+            'current_step_id' => $previousStep->id,
+            'current_assigned_user_id' => $previousOfficer->id,
+            'current_assigned_office_id' => $previousOfficer->office_id,
+            'status' => 'Pending'
+        ]);
+    }
 
 }
 
