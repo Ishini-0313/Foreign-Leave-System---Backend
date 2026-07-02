@@ -7,6 +7,9 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\OfficerController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TrackingController;
 
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
@@ -38,7 +41,7 @@ Route::get(
     [ApplicationController::class, 'generateGeneral126']
 );
 
-Route::middleware('auth:sanctum')->get(
+Route::get(
     '/applications/{id}',
     [ApplicationController::class, 'show']
 );
@@ -51,3 +54,27 @@ Route::middleware('auth:sanctum')->get(
 Route::get('/office-by-id', [OfficeController::class, 'getOfficeById']);
 
 Route::get('/grade-by-id', [GradeController::class, 'getClassById']);
+
+Route::get('/role-by-id', [RoleController::class, 'getRoleById']);
+
+Route::middleware('auth:sanctum')->group(function(){
+    Route::get('/officer/pending-applications', [OfficerController::class, 'pending']);
+});
+
+Route::get('/applications/{id}/tracking', [TrackingController::class, 'index']);
+
+Route::get('/applications/{id}/documents', [ApplicationController::class, 'documents']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post(
+        '/applications/{application}/forward',
+        [OfficerController::class, 'forward']
+    );
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post(
+        '/applications/{application}/return',
+        [OfficerController::class, 'return']
+    );
+});

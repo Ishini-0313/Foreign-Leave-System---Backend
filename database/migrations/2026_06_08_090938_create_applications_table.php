@@ -34,7 +34,7 @@ return new class extends Migration
             $table->string('nic');
 
             $table->foreignId('ministry_id')->constrained('offices');
-            $table->foreignId('institute_id')->constrained('offices');
+            $table->foreignId('institute_id')->nullable()->constrained('offices');
 
             $table->string('arrangement_made_to_cover_duty');
 

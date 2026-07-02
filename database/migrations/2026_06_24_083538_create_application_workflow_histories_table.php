@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('application_id')->constrained('applications');
             $table->foreignId('workflow_step_id')->constrained('workflow_steps');
-            $table->string('acted_by');
+            $table->foreignId('user_id')->constrained('users');
             $table->string('action');
             $table->string('remarks');
             $table->timestamps();
