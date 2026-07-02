@@ -1,0 +1,26 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use App\Models\Office;
+
+class SubOfficeSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        Office::create([
+            'name' => 'පිරිස් හා පුහුණු අංශය',
+            'type' => 'sub section',
+        ]);
+
+        Office::create([
+            'name' => 'පාලන අංශය',
+            'type' => 'sub section',
+        ]);
+    }
+}

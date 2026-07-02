@@ -11,6 +11,10 @@ use Database\Seeders\DistrictOfficeSeeder;
 use Database\Seeders\OfficeSeeder;
 use Database\Seeders\GradeSeeder;
 use Database\Seeders\ServiceSeeder;
+use Database\Seeders\RoleSeeder;
+use Database\Seeders\Workflow_templateSeeder;
+use Database\Seeders\SubOfficeSeeder;
+use Database\Seeders\Workflow_step_seeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -34,7 +38,11 @@ class DatabaseSeeder extends Seeder
             DistrictOfficeSeeder::class,
             OfficeSeeder::class,
             GradeSeeder::class,
-            ServiceSeeder::class
+            ServiceSeeder::class,
+            RoleSeeder::class,
+            SubOfficeSeeder::class,
+            Workflow_templateSeeder::class,
+            Workflow_step_seeder::class
         ]);
     }
 }

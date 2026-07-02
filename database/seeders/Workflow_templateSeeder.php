@@ -58,14 +58,34 @@ class Workflow_templateSeeder extends Seeder
             'workflow_name' => 'Institue > Department of Education > Ministry of Education > Chief Sec Personnel & Training'
         ]);
 
-        // 10
-        // Workflow_template::create([
-        //     'workflow_name' => 'Institue >  > Chief Sec Personnel & Training'
-        // ]);
+        //10
+        Workflow_template::create([
+            'workflow_name' => 'Institue > Office of the assistant commissioner of local government-Galle> Department of local government > Chief Ministry > Chief Sec Personnel & Training'
+        ]);
 
-        // 11
-        // Workflow_template::create([
-        //     'workflow_name' => 'Institue >  > Chief Sec Personnel & Training'
-        // ]);
+        //11
+        Workflow_template::create([
+            'workflow_name' => 'Institue > Office of the assistant commissioner of local government-Matara> Department of local government > Chief Ministry > Chief Sec Personnel & Training'
+        ]);
+
+        //12
+        Workflow_template::create([
+            'workflow_name' => 'Institue > Office of the assistant commissioner of local government-Hambanthota> Department of local government > Chief Ministry > Chief Sec Personnel & Training'
+        ]);
+
+        //13
+        Workflow_template::create([
+            'workflow_name' => 'Institue > Office of provincial director of health service-Galle > Department of health service > Chief Ministry > Chief Sec Personnel & Training'
+        ]);
+
+        //14
+        Workflow_template::create([
+            'workflow_name' => 'Institue > Office of provincial director of health service-Matara > Department of health service > Chief Ministry > Chief Sec Personnel & Training'
+        ]);
+
+        //15
+        Workflow_template::create([
+            'workflow_name' => 'Institue > Office of provincial director of health service-Hambanthota > Department of health service > Chief Ministry > Chief Sec Personnel & Training'
+        ]);
     }
 }

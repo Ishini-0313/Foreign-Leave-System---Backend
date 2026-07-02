@@ -30,10 +30,15 @@ class RoleSeeder extends Seeder
 
         // 4
         Role::create([
-            'role_name' => 'Recommending Officer'
+            'role_name' => 'Recommended Officer-I'
         ]);
 
-        // 5
+        //5
+        Role::create([
+            'role_name' => 'Recommended Officer-II'
+        ]);
+
+        // 6
         Role::create([
             'role_name' => 'Chief Secretary'
         ]);
