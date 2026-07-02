@@ -18,6 +18,8 @@ return new class extends Migration
 
             $table->string('document_type');
 
+            $table->string('file_name');
+
             $table->string('file_path');
 
             $table->timestamps();

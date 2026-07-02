@@ -164,6 +164,8 @@ class ApplicationController extends Controller
 
                 if ($request->hasFile($field)) {
 
+                    $file = $request->file($field);
+
                     $path = $request
                         ->file($field)
                         ->store(
@@ -174,6 +176,7 @@ class ApplicationController extends Controller
                     Document::create([
                         'application_id' => $application->id,
                         'document_type' => $field,
+                        'file_name' => $file->getClientOriginalName(),
                         'file_path' => $path,
                     ]);
                 }
@@ -234,5 +237,13 @@ class ApplicationController extends Controller
         ->first();
 
         return response()->json($application);
+    }
+
+    public function documents($id){
+        $application = Application::with('documents')->findOrFail($id);
+
+        return response()->json(
+            $application->documents
+        );
     }
 }
