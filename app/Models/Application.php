@@ -9,6 +9,8 @@ use App\Models\GOSL_funds;
 use App\Models\Previous_travel;
 use App\Models\Document;
 use App\Models\Application_workflow_histories;
+use App\Models\Office;
+use App\Models\Workflow_steps;
 
 class Application extends Model
 {
@@ -74,7 +76,7 @@ class Application extends Model
     }
 
     public function current_step(){
-        return $this->belongsTo(Workflow_template::class, 'current_step_id');
+        return $this->belongsTo(Workflow_steps::class, 'current_step_id');
     }
 
     public function goslFunds(){
@@ -91,6 +93,10 @@ class Application extends Model
 
     public function workflowHistories(){
         return $this->hasMany(Application_workflow_histories::class);
+    }
+
+    public function institute(){
+        return $this->belongsTo(Office::class, 'institute_id');
     }
 }
 
