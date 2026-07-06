@@ -222,7 +222,9 @@ class ApplicationController extends Controller
         $application = Application::with([
             'goslFunds',
             'previousTravels',
-            'documents'
+            'documents',
+            'ministry',
+            'institute'
         ])->findOrFail($id);
 
         return response()->json($application);

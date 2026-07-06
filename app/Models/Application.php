@@ -95,6 +95,10 @@ class Application extends Model
         return $this->hasMany(Application_workflow_histories::class);
     }
 
+    public function ministry(){
+        return $this->belongsTo(Office::class, 'ministry_id');
+    }
+
     public function institute(){
         return $this->belongsTo(Office::class, 'institute_id');
     }
