@@ -11,6 +11,7 @@ use App\Models\Document;
 use App\Models\Application_workflow_histories;
 use App\Models\Office;
 use App\Models\Workflow_steps;
+use App\Models\Application_amendments;
 
 class Application extends Model
 {
@@ -68,7 +69,7 @@ class Application extends Model
         'cost_maintanence_abroad',
         'relationship_of_person_meeting_expenditure',
 
-        'signature_path'
+        'signature_path',
     ];
 
     public function applicant(){
@@ -101,6 +102,14 @@ class Application extends Model
 
     public function institute(){
         return $this->belongsTo(Office::class, 'institute_id');
+    }
+
+    public function availableLeaveInfo(){
+        return $this->hasOne(available_leave_info::class);
+    }
+
+    public function amendments(){
+        return $this->hasMany(Application_amendments::class);
     }
 }
 
