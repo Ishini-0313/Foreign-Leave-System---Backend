@@ -10,6 +10,9 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\OfficerController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TrackingController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\AmendmentsController;
 
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
@@ -32,6 +35,11 @@ Route::get('/grades', [GradeController::class, 'index']);
 // sumbit application
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/application', [ApplicationController::class, 'store']);
+});
+
+// sumbit amendment
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/amendment', [AmendmentsController::class, 'store']);
 });
 
 Route::get('/sub-offices', [OfficeController::class, 'get_sub_office_by_ministry']);
@@ -58,7 +66,8 @@ Route::get('/grade-by-id', [GradeController::class, 'getClassById']);
 Route::get('/role-by-id', [RoleController::class, 'getRoleById']);
 
 Route::middleware('auth:sanctum')->group(function(){
-    Route::get('/officer/pending-applications', [OfficerController::class, 'pending']);
+    Route::get('/officer/pending-applications', [OfficerController::class, 'myQueue']);
+    Route::get('/officer/all-applications', [OfficerController::class, 'allApplications']);
 });
 
 Route::get('/applications/{id}/tracking', [TrackingController::class, 'index']);
@@ -78,3 +87,13 @@ Route::middleware('auth:sanctum')->group(function () {
         [OfficerController::class, 'return']
     );
 });
+
+Route::middleware('auth:sanctum')->group(function(){
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::put('/profile', [ProfileController::class, 'update']);
+});
+
+Route::post(
+    '/application/{id}/office-form',
+    [LeaveController::class,'save']
+)->middleware('auth:sanctum');
