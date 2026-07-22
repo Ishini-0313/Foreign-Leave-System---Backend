@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Application;
 use App\Models\Workflow_steps;
 use App\Models\Amendment_workflow_histories;
+use App\Models\Office;
 
 class Application_amendments extends Model
 {
@@ -31,6 +32,6 @@ class Application_amendments extends Model
     }
 
     public function workflowHistories(){
-        return $this->hasMany(Amendment_workflow_histories::class);
+        return $this->hasMany(Amendment_workflow_histories::class, "amendment_id");
     }
 }
