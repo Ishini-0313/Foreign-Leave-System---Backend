@@ -26,7 +26,7 @@ class OfficeSeeder extends Seeder
             'name' => 'නගර සභාව - අම්බලන්ගොඩ',
             'type' => 'Office',
             'parent_office_id' => 30,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 10
         ]);
 
         // 49
@@ -34,7 +34,7 @@ class OfficeSeeder extends Seeder
             'name' => 'නගර සභාව - හික්කඩුව',
             'type' => 'Office',
             'parent_office_id' => 30,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 10
         ]);
 
         // 50
@@ -42,7 +42,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශිය සභාව - බෝපේ පෝද්දල',
             'type' => 'Office',
             'parent_office_id' => 30,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 10
         ]);
 
         // 51
@@ -50,7 +50,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - රජ්ගම',
             'type' => 'Office',
             'parent_office_id' => 30,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 10
         ]);
 
         // 52
@@ -58,7 +58,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව -නියාගම',
             'type' => 'Office',
             'parent_office_id' => 30,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 10
         ]);
 
         // 53
@@ -66,7 +66,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - ඉමදුව',
             'type' => 'Office',
             'parent_office_id' => 30,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 10
         ]);
 
         // 54
@@ -74,7 +74,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - අක්මීමණ',
             'type' => 'Office',
             'parent_office_id' => 30,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 10
         ]);
 
         // 55
@@ -82,7 +82,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - නෙළුව',
             'type' => 'Office',
             'parent_office_id' => 30,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 10
         ]);
 
         // 56
@@ -90,7 +90,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - වැලිවිටිය-දිවිතුර',
             'type' => 'Office',
             'parent_office_id' => 30,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 10
         ]);
 
         // 57
@@ -98,7 +98,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - බෙන්තොට',
             'type' => 'Office',
             'parent_office_id' => 30,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 10
         ]);
 
         // 58
@@ -106,7 +106,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - බද්දේගම',
             'type' => 'Office',
             'parent_office_id' => 30,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 10
         ]);
 
         // 59
@@ -114,7 +114,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - නාගොඩ',
             'type' => 'Office',
             'parent_office_id' => 30,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 10
         ]);
 
         // 60
@@ -122,7 +122,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - කරන්දෙණිය',
             'type' => 'Office',
             'parent_office_id' => 30,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 10
         ]);
 
         // 61
@@ -130,7 +130,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - තවලම',
             'type' => 'Office',
             'parent_office_id' => 30,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 10
         ]);
 
         // 62
@@ -138,7 +138,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - යක්කලමුල්ල',
             'type' => 'Office',
             'parent_office_id' => 30,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 10
         ]);
 
         // 63
@@ -146,7 +146,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - හබරාදුව',
             'type' => 'Office',
             'parent_office_id' => 30,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 10
         ]);
 
         // 64
@@ -154,7 +154,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - අම්බලන්ගොඩ',
             'type' => 'Office',
             'parent_office_id' => 30,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 10
         ]);
 
         // 65
@@ -162,7 +162,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - ඇල්පිටිය',
             'type' => 'Office',
             'parent_office_id' => 30,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 10
         ]);
 
         // 66
@@ -170,7 +170,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - බලපිටිය',
             'type' => 'Office',
             'parent_office_id' => 30,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 10
         ]);
 
         // 67
@@ -178,7 +178,7 @@ class OfficeSeeder extends Seeder
             'name' => 'මහා නගර සභාව - මාතර',
             'type' => 'Office',
             'parent_office_id' => 31,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 11
         ]);
 
         // 68
@@ -186,7 +186,7 @@ class OfficeSeeder extends Seeder
             'name' => 'නගර සභාව - වැලිගම',
             'type' => 'Office',
             'parent_office_id' => 31,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 11
         ]);
 
         // 69
@@ -194,7 +194,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - පිටබැද්දර',
             'type' => 'Office',
             'parent_office_id' => 31,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 11
         ]);
 
         // 70
@@ -202,7 +202,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - අතුරලිය',
             'type' => 'Office',
             'parent_office_id' => 31,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 11
         ]);
 
         // 71
@@ -210,7 +210,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - දික්වැල්ල',
             'type' => 'Office',
             'parent_office_id' => 31,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 11
         ]);
 
         // 72
@@ -218,7 +218,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - මුලටියන',
             'type' => 'Office',
             'parent_office_id' => 31,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 11
         ]);
 
         // 73
@@ -226,7 +226,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - කිරින්ද පුහුල්වැල්ල',
             'type' => 'Office',
             'parent_office_id' => 31,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 11
         ]);
 
         // 74
@@ -234,7 +234,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - කඹුරුපිටිය',
             'type' => 'Office',
             'parent_office_id' => 31,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 11
         ]);
 
         // 75
@@ -242,7 +242,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - මාතර',
             'type' => 'Office',
             'parent_office_id' => 31,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 11
         ]);
 
         // 76
@@ -250,7 +250,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - පස්ගොඩ',
             'type' => 'Office',
             'parent_office_id' => 31,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 11
         ]);
 
         //77
@@ -258,7 +258,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - හක්මන',
             'type' => 'Office',
             'parent_office_id' => 31,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 11
         ]);
 
         //78
@@ -266,7 +266,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - කොටපොල',
             'type' => 'Office',
             'parent_office_id' => 31,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 11
         ]);
 
         //79
@@ -274,7 +274,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - අකුරැස්ස',
             'type' => 'Office',
             'parent_office_id' => 31,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 11
         ]);
 
         //80
@@ -282,7 +282,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - වැලිගම',
             'type' => 'Office',
             'parent_office_id' => 31,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 11
         ]);
 
         //81
@@ -290,7 +290,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - තිහගොඩ',
             'type' => 'Office',
             'parent_office_id' => 31,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 11
         ]);
 
         //82
@@ -298,7 +298,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - මාලිම්බඩ',
             'type' => 'Office',
             'parent_office_id' => 31,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 11
         ]);
 
         //83
@@ -306,7 +306,7 @@ class OfficeSeeder extends Seeder
             'name' => 'ප්‍රාදේශීය සභාව - දෙවිනුවර',
             'type' => 'Office',
             'parent_office_id' => 31,
-            'workflow_template_id' => 12
+            'workflow_template_id' => 11
         ]);
 
         //84
@@ -410,7 +410,7 @@ class OfficeSeeder extends Seeder
             'name' => 'මූලික රෝහල - බලපිටිය',
             'type' => 'Office',
             'parent_office_id' => 34,
-            'workflow_template_id' => 13
+            'workflow_template_id' => 14
         ]);
 
         //97
@@ -418,7 +418,7 @@ class OfficeSeeder extends Seeder
             'name' => 'මූලික රෝහල - උඩුගම',
             'type' => 'Office',
             'parent_office_id' => 34,
-            'workflow_template_id' => 13
+            'workflow_template_id' => 14
         ]);
 
         //98
@@ -426,7 +426,7 @@ class OfficeSeeder extends Seeder
             'name' => 'මූලික රෝහල - ඇල්පිටිය',
             'type' => 'Office',
             'parent_office_id' => 34,
-            'workflow_template_id' => 13
+            'workflow_template_id' => 14
         ]);
 
         //99
@@ -434,7 +434,7 @@ class OfficeSeeder extends Seeder
             'name' => 'මූලික රෝහල - කඹුරුපිටිය',
             'type' => 'Office',
             'parent_office_id' => 35,
-            'workflow_template_id' => 13
+            'workflow_template_id' => 15
         ]);
 
         //100
@@ -442,7 +442,7 @@ class OfficeSeeder extends Seeder
             'name' => 'මූලික රෝහල - දෙනියාය',
             'type' => 'Office',
             'parent_office_id' => 35,
-            'workflow_template_id' => 13
+            'workflow_template_id' => 15
         ]);
 
         //101
