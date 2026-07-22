@@ -78,4 +78,14 @@ class AmendmentsController extends Controller
             ], 500);
         }
     }
+
+    public function getAmendments($application_id){
+        $amendment = Application_amendments::with(['application'])->where(
+            'application_id',
+            $application_id
+        )
+        ->get();
+
+        return response()->json($amendment);
+    }
 }
