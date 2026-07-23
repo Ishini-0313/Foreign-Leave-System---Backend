@@ -72,6 +72,12 @@ class Application extends Model
         'signature_path',
     ];
 
+    protected $appends = ['is_editable'];
+
+    public function getIsEditableAttribute(){
+        return $this->status === "Returned";
+    }
+
     public function applicant(){
         return $this->belongsTo(User::class, 'user_id');
     }
