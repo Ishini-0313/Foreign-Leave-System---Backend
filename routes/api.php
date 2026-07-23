@@ -13,6 +13,7 @@ use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\AmendmentsController;
+use App\Http\Controllers\AmendmentTrackingController;
 
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
@@ -37,6 +38,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/application', [ApplicationController::class, 'store']);
 });
 
+// re-sumbit application
+Route::middleware('auth:sanctum')->group(function () {
+    Route::put('/application/{applicationId}/resubmit', [ApplicationController::class, 'restore']);
+});
+
 // sumbit amendment
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/amendment', [AmendmentsController::class, 'store']);
@@ -59,6 +65,12 @@ Route::middleware('auth:sanctum')->get(
     [ApplicationController::class, 'myApplication']
 );
 
+//get amendment related to application id
+Route::middleware('auth:sanctum')->get(
+    '/amendments/{application_id}',
+    [AmendmentsController::class, 'getAmendments']
+);
+
 Route::get('/office-by-id', [OfficeController::class, 'getOfficeById']);
 
 Route::get('/grade-by-id', [GradeController::class, 'getClassById']);
@@ -71,6 +83,7 @@ Route::middleware('auth:sanctum')->group(function(){
 });
 
 Route::get('/applications/{id}/tracking', [TrackingController::class, 'index']);
+Route::get('/amendments/{id}/tracking', [AmendmentTrackingController::class, 'index']);
 
 Route::get('/applications/{id}/documents', [ApplicationController::class, 'documents']);
 
