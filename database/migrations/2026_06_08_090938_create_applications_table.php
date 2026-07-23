@@ -67,7 +67,7 @@ return new class extends Migration
             $table->string('relationship_of_person_meeting_expenditure');
 
             $table->string('signature_path')->nullable();
-            
+
             $table->timestamps();
         });
     }
