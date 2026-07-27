@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Workflow_steps;
 use App\Services\WorkflowService;
 use App\Models\Application_workflow_histories;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ApplicationSubmittedMail;
+use App\Models\Workflow_template;
 
 class ApplicationController extends Controller
 {
@@ -26,8 +29,15 @@ class ApplicationController extends Controller
                 throw new \Exception('User office not assigned');
             }
 
-            $workflow_id = $office->workflow_template_id;
-
+            if($request->service_id == "ශ්‍රී ලංකා පරිපාලන සේවය"  && $request->class_or_grade == "විශේෂ ශ්‍රේණිය" ){
+                $workflow_id = Workflow_template::where(
+                    'workflow_name',
+                    'Special Grade Workflow'
+                )->value('id');
+            }else{
+                $workflow_id = $office->workflow_template_id;
+            }
+            
             $first_step = Workflow_steps::where('workflow_id',$workflow_id)->orderBy('sequence_no')->first();
 
             $application = Application::create([
@@ -194,8 +204,10 @@ class ApplicationController extends Controller
         
             DB::commit();
 
+            Mail::to($user->email)->send(new ApplicationSubmittedMail($application));
+
             return response()->json([
-                'message' => 'Application Submitted'
+                'message' => 'Application Submitted successfully'
             ]);
 
         }catch(\Exception $e){
