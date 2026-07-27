@@ -6,10 +6,13 @@ use App\Models\Application;
 use App\Models\Office;
 use App\Models\User;
 use App\Models\Application_workflow_histories;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ApplicationReturnedMail;
+
 
 class WorkflowService{
     public function assignFirstStep(Application $application){
-        $firstStep = Workflow_steps::where('workflow_id', $application->workflow_id)->orderBy('sequence_no')->first();
+        $firstStep = Workflow_steps::where('workflow_id', $application->workflow_id)->where('office_reference', '!=', 'Applicant')->orderBy('sequence_no')->first();
 
         $targetOfficer = $this->resolveOfficer($application, $firstStep);
 
@@ -23,6 +26,8 @@ class WorkflowService{
     public function resolveOfficer(Application $application, Workflow_steps $step){
         if($step->office_reference == 'Institute'){
             $officeId = $application->applicant->office_id;
+        }elseif($step->office_reference == 'Applicant'){
+            return $application->applicant;
         }else{
             $office = Office::where('name', $step->office_reference)->first();
             $officeId = $office->id;
@@ -39,6 +44,17 @@ class WorkflowService{
     }
 
     public function forward(Application $application, User $user, ?string $remarks){
+        $currentStep = $application->current_step;
+
+        // check subject officer fill offie form
+        if($currentStep->role_id == 2){
+            if (!$application->availableLeaveInfo) {
+                throw new \Exception(
+                    "Please complete the 'Particulars of Available Leave' section before forwarding this application."
+                );
+            }
+        }
+
         Application_workflow_histories::create([
             'application_id' => $application->id,
             'workflow_step_id' => $application->current_step_id,
@@ -46,8 +62,6 @@ class WorkflowService{
             'action' => 'Forwarded',
             'remarks' => $remarks
         ]);
-
-        $currentStep = $application->current_step;
 
         $nextStep = Workflow_steps::where('workflow_id', $application->workflow_id)->where('sequence_no', $currentStep->sequence_no + 1)->first();
 
@@ -84,6 +98,22 @@ class WorkflowService{
 
         $previousStep = Workflow_steps::where('workflow_id', $application->workflow_id)->where('sequence_no', $currentStep->sequence_no - 1)->first();
 
+        if ($previousStep->office_reference == 'Applicant') {
+            $application->update([
+                'current_step_id' => $previousStep->id,
+                'current_assigned_user_id' => $application->user_id,
+                'current_assigned_office_id' => null,
+                'status' => 'Returned'
+            ]);
+
+            Mail::to($application->applicant->email)->send(new ApplicationReturnedMail($application));
+
+            
+            return response()->json([
+                'message' => 'Application Returned to applicant'
+            ]);
+        }
+
         if (!$previousStep) {
             throw new \Exception("Cannot return from the first workflow step.");
         }
@@ -99,6 +129,7 @@ class WorkflowService{
             'status' => 'Pending'
         ]);
     }
+
 
 }
 

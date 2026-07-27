@@ -37,8 +37,9 @@ class OfficerController extends Controller
         $workflowService->forward($application, auth()->user(), $request->remarks);
 
         return response()->json([
-            'message'=>'Application forwarded successfully.'
+            'message' => 'Application Forwarded successfully'
         ]);
+
     }
 
     public function return(Request $request, Application $application, WorkflowService $workflowService){
@@ -55,7 +56,17 @@ class OfficerController extends Controller
         $workflowService->return($application, auth()->user(), $request->remarks);
 
         return response()->json([
-            'message'=>'Application return successfully.'
+            'message' => 'Application Returned'
         ]);
+    }
+
+    public function myQueue(){
+        $applications = Application::with(['applicant', 'applicant.office', 'current_step'])->where('current_assigned_user_id', auth()->id())->where('status', 'Pending')->latest()->get();
+        return response()->json($applications);
+    }
+
+    public function allApplications(){
+        $applications = Application::with(['applicant', 'applicant.office', 'current_step'])->latest()->get();
+        return response()->json($applications);
     }
 }
