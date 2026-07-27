@@ -87,5 +87,10 @@ class Workflow_templateSeeder extends Seeder
         Workflow_template::create([
             'workflow_name' => 'Institue > Office of provincial director of health service-Hambanthota > Department of health service > Chief Ministry > Chief Sec Personnel & Training'
         ]);
+
+        //16
+        Workflow_template::create([
+            'workflow_name' => 'Special Grade Workflow'
+        ]);
     }
 }
