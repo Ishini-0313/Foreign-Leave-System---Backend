@@ -63,6 +63,7 @@ class ApplicationController extends Controller
 
                 "purpose" => $request->purpose,
                 "nature_of_trip" => $request->nature_of_trip,
+                'leave_category' => $request->leave_category,
                 "awarding_agency" => $request->awarding_agency,
                 "expenses_mainly_to_be_met" => $request->expenses_mainly_to_be_met,
                 "foreign_loan_project_particulars_thereof" => $request->foreign_loan_project_particulars_thereof,
@@ -132,29 +133,40 @@ class ApplicationController extends Controller
             }
 
             // Save Signature
-            if ($request->signature) {
+            // if ($request->signature) {
 
-                $signature = $request->signature;
+            //     $signature = $request->signature;
 
-                $signature = str_replace(
-                    'data:image/png;base64,',
-                    '',
-                    $signature
+            //     $signature = str_replace(
+            //         'data:image/png;base64,',
+            //         '',
+            //         $signature
+            //     );
+
+            //     $signature = str_replace(
+            //         ' ',
+            //         '+',
+            //         $signature
+            //     );
+
+            //     $signaturePath = 'signatures/'.$application->id.'.png';
+
+            //     Storage::disk('public')->put(
+            //         $signaturePath,base64_decode($signature)
+            //     );
+
+            //     $application->signature_path = $signaturePath;
+            //     $application->save();
+            // }
+
+            if ($request->hasFile('signature')) {
+                $file = $request->file('signature');
+                $path = $file->storeAs(
+                    'signatures',
+                    $application->id . '.' . $file->getClientOriginalExtension(),
+                    'public'
                 );
-
-                $signature = str_replace(
-                    ' ',
-                    '+',
-                    $signature
-                );
-
-                $signaturePath = 'signatures/'.$application->id.'.png';
-
-                Storage::disk('public')->put(
-                    $signaturePath,base64_decode($signature)
-                );
-
-                $application->signature_path = $signaturePath;
+                $application->signature_path = $path;
                 $application->save();
             }
 
@@ -424,10 +436,22 @@ class ApplicationController extends Controller
             'documents',
             'ministry',
             'institute',
-            'availableLeaveInfo'
+            'availableLeaveInfo',
+            'current_step.role',
+            'amendments'
         ])->findOrFail($id);
 
-        return response()->json($application);
+        $currentStep = $application->current_step;
+        $isFinalStep = false;
+        if($currentStep){
+            $hasNextStep = Workflow_steps::where('workflow_id',$application->workflow_id)->where('sequence_no','>',$currentStep->sequence_no)->exists();
+            $isFinalStep = !$hasNextStep;
+        }
+
+        return response()->json([
+            'application' => $application,
+            'is_final_step' => $isFinalStep
+        ]);
     }
 
     public function myApplication(){

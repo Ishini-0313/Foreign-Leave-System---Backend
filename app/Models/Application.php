@@ -43,6 +43,7 @@ class Application extends Model
 
         'purpose',
         'nature_of_trip',
+        'leave_category',
         'awarding_agency',
         'expenses_mainly_to_be_met',
         'foreign_loan_project_particulars_thereof',
