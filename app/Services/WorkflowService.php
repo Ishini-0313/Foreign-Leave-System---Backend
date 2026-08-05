@@ -66,14 +66,9 @@ class WorkflowService{
         $nextStep = Workflow_steps::where('workflow_id', $application->workflow_id)->where('sequence_no', $currentStep->sequence_no + 1)->first();
 
         if(!$nextStep){
-            $application->update([
-                'status' => 'Approved',
-                'approved_at' => now(),
-                'current_assigned_user_id'=>null,
-                'current_assigned_office_id'=>null
-            ]);
-
-            return;
+            throw new \Exception(
+                'This is the final approval step. Please use Approve.'
+            );
         }
 
         $nextOfficer = $this->resolveOfficer($application, $nextStep);
@@ -130,7 +125,51 @@ class WorkflowService{
         ]);
     }
 
+    public function approve(Application $application,User $user,?string $remarks){
+        $currentStep = $application->current_step;
 
+        if (!$currentStep) {
+            throw new \Exception(
+                'Current workflow step not found.'
+            );
+        }
+
+        // Check whether this really is the final step
+        $nextStep = Workflow_steps::where(
+            'workflow_id',
+            $application->workflow_id
+        )
+        ->where(
+            'sequence_no',
+            '>',
+            $currentStep->sequence_no
+        )
+        ->orderBy('sequence_no')
+        ->first();
+
+        if ($nextStep) {
+            throw new \Exception(
+                'This application is not at the final approval step.'
+            );
+        }
+
+        // Create approval history
+        Application_workflow_histories::create([
+            'application_id' => $application->id,
+            'workflow_step_id' => $application->current_step_id,
+            'user_id' => $user->id,
+            'action' => 'Approved',
+            'remarks' => $remarks ?? '-'
+        ]);
+
+        // Mark application approved
+        $application->update([
+            'status' => 'Approved',
+            'approved_at' => now(),
+            'current_assigned_user_id' => null,
+            'current_assigned_office_id' => null,
+        ]);
+    }
 }
 
 
