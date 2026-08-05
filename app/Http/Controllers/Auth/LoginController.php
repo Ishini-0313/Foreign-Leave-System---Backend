@@ -15,7 +15,7 @@ class LoginController extends Controller
             'password' => 'required'
         ]);
 
-        $user = User::where('username', $request->username)->first();
+        $user = User::with(['role', 'office'])->where('username', $request->username)->first();
 
         if(!$user){
             return response()->json([
