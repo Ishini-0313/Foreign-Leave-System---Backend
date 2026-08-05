@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\OfficeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\ApplicationController;
@@ -60,6 +61,11 @@ Route::get(
     [ApplicationController::class, 'show']
 );
 
+Route::get(
+    '/amendments/{id}',
+    [AmendmentsController::class, 'show']
+);
+
 Route::middleware('auth:sanctum')->get(
     '/my-application',
     [ApplicationController::class, 'myApplication']
@@ -80,6 +86,7 @@ Route::get('/role-by-id', [RoleController::class, 'getRoleById']);
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('/officer/pending-applications', [OfficerController::class, 'myQueue']);
     Route::get('/officer/all-applications', [OfficerController::class, 'allApplications']);
+    Route::get('/officer/all-sub-applications', [OfficerController::class, 'allSubApplications']);
 });
 
 Route::get('/applications/{id}/tracking', [TrackingController::class, 'index']);
@@ -92,21 +99,28 @@ Route::middleware('auth:sanctum')->group(function () {
         '/applications/{application}/forward',
         [OfficerController::class, 'forward']
     );
-});
 
-Route::middleware('auth:sanctum')->group(function () {
     Route::post(
         '/applications/{application}/return',
         [OfficerController::class, 'return']
+    );
+
+    Route::post(
+        '/applications/{application}/approve',
+        [OfficerController::class, 'approve']
     );
 });
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::put('/profile', [ProfileController::class, 'update']);
+    Route::put('/password-change', [ProfileController::class, 'changePassword']);
 });
 
 Route::post(
     '/application/{id}/office-form',
     [LeaveController::class,'save']
 )->middleware('auth:sanctum');
+
+Route::post('/forgot-password', [PasswordController::class, 'forgotPassword']);
+Route::post('/reset-password', [PasswordController::class, 'resetPassword']);
