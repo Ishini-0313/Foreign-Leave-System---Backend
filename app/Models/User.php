@@ -7,9 +7,14 @@ use App\Models\Office;
 use App\Models\Role;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
 
-class User extends Authenticatable
+class User extends Authenticatable implements CanResetPassword
 {
+    use Notifiable;
+    use CanResetPasswordTrait;
     use HasApiTokens;
     
     protected $fillable = [
