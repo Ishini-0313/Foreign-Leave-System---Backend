@@ -15,6 +15,6 @@ class AmendmentDocuments extends Model
     ];
 
     public function amendment(){
-        return $this->belongsTo(Application_amendments::class);
+        return $this->belongsTo(Application_amendments::class, 'amendment_id','id');
     }
 }

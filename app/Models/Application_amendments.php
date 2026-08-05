@@ -7,6 +7,7 @@ use App\Models\Application;
 use App\Models\Workflow_steps;
 use App\Models\Amendment_workflow_histories;
 use App\Models\Office;
+use App\Models\AmendmentDocuments;
 
 class Application_amendments extends Model
 {
@@ -33,5 +34,9 @@ class Application_amendments extends Model
 
     public function workflowHistories(){
         return $this->hasMany(Amendment_workflow_histories::class, "amendment_id");
+    }
+
+    public function documents(){
+        return $this->hasMany(AmendmentDocuments::class, 'amendment_id', 'id');
     }
 }
