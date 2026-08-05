@@ -88,4 +88,26 @@ class AmendmentsController extends Controller
 
         return response()->json($amendment);
     }
+
+    public function show($id){
+        $amendment = Application_amendments::with([
+            'application',
+            'application.institute',
+            'current_step',
+            'workflowHistories',
+            'documents'
+        ])->findOrFail($id);
+
+        $currentStep = $amendment->current_step;
+        $isFinalStep = false;
+        if($currentStep){
+            $hasNextStep = Workflow_steps::where('workflow_id',$amendment->workflow_id)->where('sequence_no','>',$currentStep->sequence_no)->exists();
+            $isFinalStep = !$hasNextStep;
+        }
+
+        return response()->json([
+            'amendment' => $amendment,
+            'is_final_step' => $isFinalStep
+        ]);
+    }
 }
