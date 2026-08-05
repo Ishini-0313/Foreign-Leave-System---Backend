@@ -50,6 +50,7 @@ class OfficeController extends Controller
         return Office::select('id', 'name')->where('parent_office_id', $request->parent_office_id)->get();
     }
 
+
     // get office by id
     public function getOfficeById(Request $request){
         return Office::select('name')->where('id', $request->id)->first();
