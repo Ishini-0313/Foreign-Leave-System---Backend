@@ -15,6 +15,7 @@ use Database\Seeders\RoleSeeder;
 use Database\Seeders\Workflow_templateSeeder;
 use Database\Seeders\SubOfficeSeeder;
 use Database\Seeders\Workflow_step_seeder;
+use Database\Seeders\DesignationSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -42,7 +43,8 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             SubOfficeSeeder::class,
             Workflow_templateSeeder::class,
-            Workflow_step_seeder::class
+            Workflow_step_seeder::class,
+            DesignationSeeder::class
         ]);
     }
 }
