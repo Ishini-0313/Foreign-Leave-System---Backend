@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Office;
 use App\Models\Role;
+use App\Models\Designation;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -18,7 +19,7 @@ class User extends Authenticatable implements CanResetPassword
     use HasApiTokens;
     
     protected $fillable = [
-        'full_name', 'nic', 'email', 'phone', 'designation', 'office_id', 'role_id', 'username', 'hash_password','status'
+        'full_name', 'nic', 'email', 'phone', 'designation_id', 'office_id', 'role_id', 'username', 'hash_password','status'
     ];
 
     protected $hidden = ['hash_password'];
@@ -30,5 +31,9 @@ class User extends Authenticatable implements CanResetPassword
 
     public function role(){
         return $this->belongsTo(Role::class);
+    }
+
+    public function designation(){
+        return $this->belongsTo(Designation::class);
     }
 }
