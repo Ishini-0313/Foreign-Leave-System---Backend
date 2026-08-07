@@ -9,7 +9,7 @@ class ProfileController extends Controller
 {
     public function show(Request $request){
         return response()->json(
-            $request->user()->load(['office', 'role'])
+            $request->user()->load(['office', 'role', 'designation'])
         );
     }
 
@@ -21,14 +21,14 @@ class ProfileController extends Controller
             'full_name' => 'required',
             'email' => 'required|email|unique:users,email,'.$user->id,
             'phone'=>'required',
-            'designation'=>'required'
+            'designation_id'=>'required'
         ]);
 
         $user->update([
             'full_name'=>$request->full_name,
             'email'=>$request->email,
             'phone'=>$request->phone,
-            'designation'=>$request->designation
+            'designation_id'=>$request->designation_id
         ]);
 
         return response()->json([

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nic');
             $table->string('email')->unique();
             $table->string('phone')->unique();
-            $table->string('designation');
+            $table->foreignId('designation_id')->constrained('designations');
             $table->foreignId('office_id')->constrained('offices');
             $table->integer('role_id')->default(1);
             $table->string('username')->unique();
