@@ -12,6 +12,7 @@ use App\Models\Application_workflow_histories;
 use App\Models\Office;
 use App\Models\Workflow_steps;
 use App\Models\Application_amendments;
+use App\Models\ApprovalLetter;
 
 class Application extends Model
 {
@@ -117,6 +118,10 @@ class Application extends Model
 
     public function amendments(){
         return $this->hasMany(Application_amendments::class);
+    }
+
+    public function approvalLetter(){
+        return $this->hasOne(ApprovalLetter::class);
     }
 }
 

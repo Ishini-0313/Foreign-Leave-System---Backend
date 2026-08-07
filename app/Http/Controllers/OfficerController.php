@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Application;
 use App\Services\WorkflowService;
 use App\Models\Office;
+use App\Services\ApprovalLetterService;
 
 class OfficerController extends Controller
 {
@@ -15,7 +16,7 @@ class OfficerController extends Controller
         return Application::with(['applicant','applicant.office'])->where('current_assigned_user_id', auth()->id())->where('status', 'Pending')->get();
     }
 
-    public function approve(Request $request, Application $application, WorkflowService $workflowService){
+    public function approve(Request $request, Application $application, WorkflowService $workflowService, ApprovalLetterService $approvalLetterService){
         $request->validate([
             'remarks' => 'nullable|string'
         ]);
@@ -26,15 +27,31 @@ class OfficerController extends Controller
                 'message' => 'This application is not assigned to you.'
             ], 403);
         }
+
         try{
             $workflowService->approve($application,auth()->user(),$request->remarks);
 
+            $approvalLetter = $approvalLetterService->generate(
+                $application->fresh()
+            );
+
             return response()->json([
-                'message' => 'Application approved successfully.'
+                'message' => 'Application approved successfully.',
+                'approval_letter' => [
+                    'id' => $approvalLetter->id,
+                    'file_name' => $approvalLetter->file_name,
+                ]
             ]);
 
             $this->generateApprovalLetter($application);
         }catch(\Exception $e){
+            \Log::error(
+            'Approval letter generation failed',
+                [
+                    'application_id' => $application->id,
+                    'error' => $e->getMessage()
+                ]
+            );
             return response()->json([
                 'error' => $e->getMessage()
             ], 400);
