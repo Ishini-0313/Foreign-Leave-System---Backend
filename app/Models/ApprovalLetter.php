@@ -11,6 +11,7 @@ class ApprovalLetter extends Model
         'application_id',
         'file_name',
         'file_path',
+        'pdf_path',
         'template_name',
     ];
 
