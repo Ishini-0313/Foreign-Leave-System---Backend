@@ -5,11 +5,12 @@ use PhpOffice\PhpWord\TemplateProcessor;
 use Illuminate\Support\Facades\Storage;
 use App\Models\ApprovalLetter;
 use App\Models\Application;
+use Carbon\Carbon;
+use Symfony\Component\Process\Process;
 
 class ApprovalLetterService
 {
-    public function generate(Application $application): ApprovalLetter
-    {
+    public function generate(Application $application): ApprovalLetter{
         // refresh application relationship
         $application->load([
             'applicant',
@@ -126,17 +127,44 @@ class ApprovalLetterService
             mkdir($directory, 0755, true);
         }
 
-        $outputPath = $directory . '/' . $fileName;
+        // file names
+        $baseName = 'Approval_Letter_' . $application->application_no;
+
+        $docxFileName = $baseName . '.docx';
+        $pdfFileName = $baseName . '.pdf';
+
+        $docxPath = $directory . '/' . $docxFileName;
+        $pdfPath = $directory . '/' . $pdfFileName;
 
         //save word document
-        $templateProcessor->saveAs($outputPath);
+        $templateProcessor->saveAs($docxPath);
 
-        return ApprovalLetter::create([
-            'application_id' => $application->id,
-            'file_name' => $fileName,
-            'file_path' => 'generated/approval_letters/' . $fileName,
-            'template_name' => $category,
-        ]);
+        //convert docx to pdf
+        $this->convertToPdf($docxPath,$directory);
+
+        if (!file_exists($pdfPath)) {
+            throw new \Exception(
+                'PDF generation failed.'
+            );
+        }
+
+        // return ApprovalLetter::create([
+        //     'application_id' => $application->id,
+        //     'file_name' => $fileName,
+        //     'file_path' => 'generated/approval_letters/' . $fileName,
+        //     'template_name' => $category,
+        // ]);
+
+        return ApprovalLetter::create(
+            [
+                'application_id' => $application->id,
+                'file_name' => $fileName,
+                'file_path' => 'generated/approval_letters/' . $fileName,
+                'pdf_path' => 'generated/approval_letters/' .
+                    pathinfo($fileName, PATHINFO_FILENAME) . '.pdf',
+                'template_name' => $category,
+            ]
+        );
     }
 
     private function formatDate($date){
@@ -145,4 +173,21 @@ class ApprovalLetterService
         }
         return \Carbon\Carbon::parse($date)->format('d/m/Y');
     }
-}
+
+    private function convertToPdf(string $docxPath,string $outputDirectory): string {
+        $command = '"C:\Program Files\LibreOffice\program\soffice.exe" '
+        . '--headless '
+        . '--convert-to pdf '
+        . '--outdir "' . $outputDirectory . '" '
+        . '"' . $docxPath . '"';
+
+        exec($command, $output, $resultCode);
+
+        if ($resultCode !== 0) {
+            throw new \Exception('Failed to convert approval letter to PDF.');
+        }
+
+        return $outputDirectory . '/' .
+            pathinfo($docxPath, PATHINFO_FILENAME) . '.pdf';
+        }
+    }
