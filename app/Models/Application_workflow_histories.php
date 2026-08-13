@@ -10,7 +10,7 @@ use App\Models\User;
 
 class Application_workflow_histories extends Model
 {
-    protected $fillable = ['application_id', 'workflow_step_id', 'user_id','action', 'remarks'];
+    protected $fillable = ['application_id', 'workflow_step_id', 'user_id','action', 'remarks', 'signature_path'];
 
     public function workflowStep(){
         return $this->belongsTo(Workflow_steps::class);

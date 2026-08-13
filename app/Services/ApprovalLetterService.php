@@ -189,5 +189,5 @@ class ApprovalLetterService
 
         return $outputDirectory . '/' .
             pathinfo($docxPath, PATHINFO_FILENAME) . '.pdf';
-        }
     }
+}
