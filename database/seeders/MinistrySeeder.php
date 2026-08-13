@@ -56,24 +56,24 @@ class MinistrySeeder extends Seeder
         // 6
         Office::create([
             'name' => 'දකුණු පළාත් පළාත් සමූපකාර සේවක කොමිෂන් සභාව',
-            'type' => 'Ministry',
-            'parent_office_id' => NULL,
+            'type' => 'Department',
+            'parent_office_id' => 11,
             'workflow_template_id' => 6
         ]);
 
         // 7
         Office::create([
             'name' => 'දකුණු පළාත් පළාත් මෝටර් රථ ප්‍රවාහන දෙපාර්තමේන්තුව',
-            'type' => 'Ministry',
-            'parent_office_id' => NULL,
+            'type' => 'Department',
+            'parent_office_id' => 3,
             'workflow_template_id' => 1
         ]);
 
         // 8
         Office::create([
             'name' => 'දකුණු පළාත් පළාත් ආදායම් දෙපාර්තමේන්තුව',
-            'type' => 'Ministry',
-            'parent_office_id' => NULL,
+            'type' => 'Department',
+            'parent_office_id' => 3,
             'workflow_template_id' => 1
         ]);
 
