@@ -43,7 +43,7 @@ class WorkflowService{
         return $user;
     }
 
-    public function forward(Application $application, User $user, ?string $remarks){
+    public function forward(Application $application, User $user, ?string $remarks, $signaturePath){
         $currentStep = $application->current_step;
 
         // check subject officer fill offie form
@@ -60,7 +60,8 @@ class WorkflowService{
             'workflow_step_id' => $application->current_step_id,
             'user_id' => $user->id,
             'action' => 'Forwarded',
-            'remarks' => $remarks
+            'remarks' => $remarks,
+            'signature_path' => $signaturePath
         ]);
 
         $nextStep = Workflow_steps::where('workflow_id', $application->workflow_id)->where('sequence_no', $currentStep->sequence_no + 1)->first();
@@ -80,13 +81,14 @@ class WorkflowService{
         ]);
     }
 
-    public function return(Application $application, User $user, ?string $remarks){
+    public function return(Application $application, User $user, ?string $remarks, ?string $signaturePath){
         Application_workflow_histories::create([
             'application_id' => $application->id,
             'workflow_step_id' => $application->current_step_id,
             'user_id' => $user->id,
             'action' => 'Returned',
-            'remarks' => $remarks
+            'remarks' => $remarks,
+            'signature_path' => $signaturePath
         ]);
 
         $currentStep = $application->current_step;
