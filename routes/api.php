@@ -15,6 +15,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\AmendmentsController;
 use App\Http\Controllers\AmendmentTrackingController;
+use App\Http\Controllers\DesignationController;
+use App\Http\Controllers\OfficerAssignmentController;
+use App\Http\Controllers\ApprovalLetterController;
+use App\Http\Controllers\CompletedApplicationController;
 
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
@@ -24,6 +28,9 @@ Route::get('/office', [OfficeController::class, 'index']);
 
 // get all services
 Route::get('/services', [ServiceController::class, 'index']);
+
+// get all designations
+Route::get('/designations', [DesignationController::class, 'index']);
 
 // get all ministries
 Route::get('/ministries', [OfficeController::class, 'getMinistries']);
@@ -124,3 +131,58 @@ Route::post(
 
 Route::post('/forgot-password', [PasswordController::class, 'forgotPassword']);
 Route::post('/reset-password', [PasswordController::class, 'resetPassword']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    //Officer assignment management
+    Route::get(
+        '/admin/officer-management/institutes',
+        [OfficerAssignmentController::class, 'institutes']
+    );
+
+    Route::get(
+        '/admin/officer-management/institutes/{office}/users',
+        [OfficerAssignmentController::class, 'users']
+    );
+
+    Route::get(
+        '/admin/officer-management/institutes/{office}/assignments',
+        [OfficerAssignmentController::class, 'show']
+    );
+
+    Route::post(
+        '/admin/officer-management/institutes/{office}/assign',
+        [OfficerAssignmentController::class, 'assign']
+    );
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get(
+        '/applications/{application}/approval-letter',
+        [ApprovalLetterController::class, 'viewApprovalLetter']
+    );
+
+    Route::get(
+        '/applications/{application}/approval-letter/download',
+        [ApprovalLetterController::class, 'downloadApprovalLetter']
+    );
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get(
+        '/applications/{application}/completed-form-16',
+        [CompletedApplicationController::class, 'view16']
+    );
+    Route::get(
+        '/applications/{application}/completed-form-16/download',
+        [CompletedApplicationController::class, 'download16']
+    );
+    Route::get(
+        '/applications/{application}/completed-form-126',
+        [CompletedApplicationController::class, 'view126']
+    );
+    Route::get(
+        '/applications/{application}/completed-form-126/download',
+        [CompletedApplicationController::class, 'download126']
+    );
+});
+
