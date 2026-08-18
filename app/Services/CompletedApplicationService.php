@@ -18,7 +18,8 @@ class CompletedApplicationService{
             'ministry',
             'institute',
             'previousTravels',
-            'goslFunds'
+            'goslFunds',
+            'workflowHistories.user.office'
         ]);
 
         //template
@@ -286,25 +287,10 @@ class CompletedApplicationService{
             $goslFunds?->air_travel_amount ?? '0.00'
         );
 
-        $templateProcessor->setValue(
-            'q',
-            $goslFunds?->subsistence_amount ?? '0.00'
-        );
-
-        $templateProcessor->setValue(
-            'r',
-            $goslFunds?->course_fees_amount ?? '0.00'
-        );
-
-        $templateProcessor->setValue(
-            's',
-            $goslFunds?->additional_expenses_amount ?? '0.00'
-        );
-
-        $templateProcessor->setValue(
-            't',
-            $goslFunds?->other_personal_expenses_amount ?? '0.00'
-        );
+        $templateProcessor->setValue('q',$goslFunds?->subsistence_amount ?? '0.00');
+        $templateProcessor->setValue('r',$goslFunds?->course_fees_amount ?? '0.00');
+        $templateProcessor->setValue('s',$goslFunds?->additional_expenses_amount ?? '0.00');
+        $templateProcessor->setValue('t',$goslFunds?->other_personal_expenses_amount ?? '0.00');
 
        
         $signaturePath = storage_path('app/public/' . $application->signature_path);
@@ -327,6 +313,102 @@ class CompletedApplicationService{
                 'ratio' => true,
             ]
         );
+
+        
+        // Recommended Officer
+        $recommendedHistory = null;
+
+        //get all recommendation histories
+        $recommendations = $application->workflowHistories->filter(
+            function ($history){
+                $action = strtolower(trim($history->action ?? ''));
+                return in_array($action, [
+                    'recommended',
+                    'recommend',
+                    'recommendation',
+                ],true);
+            }
+        )->sortByDesc('created_at')->values();
+
+        //ministry recommendation
+        $recommendedHistory = $recommendations->first(
+            function ($history) use ($application) {
+                return $history->user
+                    && $history->user->office
+                    && (int) $history->user->office->id === (int) $application->ministry_id;
+            }
+        );
+
+        //department recommendation
+        if (!$recommendedHistory) {
+            $recommendedHistory = $recommendations->first(
+                function ($history) use ($application) {
+                    return $history->user
+                        && $history->user->office
+                        && (int) $history->user->office->id === (int) $application->institute_id;
+                });
+        }
+
+        //Recommended date
+        $templateProcessor->setValue(
+            'recommended-date',
+            $recommendedHistory?->created_at
+                ? Carbon::parse($recommendedHistory->created_at)->format('d/m/Y')
+                : ''
+        );
+
+        //recommend officer sign
+        if ($recommendedHistory && $recommendedHistory->signature_path) {
+            $recommendedSignaturePath = storage_path('app/public/' . $recommendedHistory->signature_path);
+            if (file_exists($recommendedSignaturePath)) {
+                $templateProcessor->setImageValue(
+                    'recommend-officer-sign',
+                    [
+                        'path' => $recommendedSignaturePath,
+                        'width' => 120,
+                        'height' => 50,
+                        'ratio' => true,
+                    ]
+                );
+            } else {
+                $templateProcessor->setValue('recommend-officer-sign','');
+            }
+        }else{
+            $templateProcessor->setValue(
+                'recommend-officer-sign',''
+            );
+        }
+        //cheif-sec
+        $templateProcessor->setValue(
+            'approved-date',
+            $application->approved_at
+                ? Carbon::parse($application->approved_at)->format('d/m/Y')
+                : ''
+        );
+
+        $approvedHistory = $application->workflowHistories->where('action', 'Approved')->sortByDesc('created_at')->first();
+
+        $chiefSignaturePath = null;
+
+        if ($approvedHistory?->signature_path) {
+            $chiefSignaturePath = storage_path(
+                'app/public/' . $approvedHistory->signature_path
+            );
+        }
+
+        if ($chiefSignaturePath && file_exists($chiefSignaturePath)) {
+            $templateProcessor->setImageValue(
+                'chief-sec-sign',
+                [
+                    'path' => $chiefSignaturePath,
+                    'width' => 120,
+                    'height' => 50,
+                    'ratio' => true,
+                ]
+            );
+        } else {
+            $templateProcessor->setValue('chief-sec-sign','');
+        }
 
         //Output directory
         $directory = storage_path(
@@ -398,6 +480,7 @@ class CompletedApplicationService{
             'applicant.office',
             'ministry',
             'institute',
+            'availableLeaveInfo'
         ]);
 
         //template
@@ -468,6 +551,26 @@ class CompletedApplicationService{
                 'ratio' => true,
             ]
         );
+
+        //available leave info
+        $templateProcessor->setValue('vac-m', $application->availableLeaveInfo->vacation_months ?? '');
+        $templateProcessor->setValue('vac-d', $application->availableLeaveInfo->vacation_days ?? '');
+
+        $templateProcessor->setValue('com-m', $application->availableLeaveInfo->commuted_halfpay_months ?? '');
+        $templateProcessor->setValue('com-d', $application->availableLeaveInfo->commuted_halfpay_days ?? '');
+
+        $templateProcessor->setValue('half-m', $application->availableLeaveInfo->halfpay_months ?? '');
+        $templateProcessor->setValue('half-d', $application->availableLeaveInfo->halfpay_days ?? '');
+
+        $templateProcessor->setValue('no-m', $application->availableLeaveInfo->nopay_months ?? '');
+        $templateProcessor->setValue('no-d', $application->availableLeaveInfo->nopay_days ?? '');
+
+        $templateProcessor->setValue('sum-m', $application->availableLeaveInfo->total_months ?? '');
+        $templateProcessor->setValue('sum-d', $application->availableLeaveInfo->total_days ?? '');
+
+        $templateProcessor->setValue('ministry', $application->ministry->name ?? '');
+
+        $templateProcessor->setValue('name', $application->name ?? '');
 
         //Output directory
         $directory = storage_path(
