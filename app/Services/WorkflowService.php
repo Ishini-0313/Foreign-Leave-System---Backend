@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Application_workflow_histories;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ApplicationReturnedMail;
+use App\Models\OfficeAssignment;
+use App\Models\Role;
 
 
 class WorkflowService{
@@ -32,18 +34,56 @@ class WorkflowService{
             $office = Office::where('name', $step->office_reference)->first();
             $officeId = $office->id;
         }
-        $user =  User::where('office_id', $officeId)->where('role_id', $step->role_id)->first();
+       // $user =  User::where('office_id', $officeId)->where('role_id', $step->role_id)->first();
 
-        if (!$user) {
+       $assignment = OfficeAssignment::where('office_id',$officeId)->first();
+
+        if (!$assignment) {
             throw new \Exception(
-                "No user found for office_id={$officeId}, role_id={$step->role_id}"
+                "No user found for assignment found for office_id={$officeId}"
             );
         }
 
-        return $user;
+        //determine role
+        $role = Role::find($step->role_id);
+
+        if (!$role) {
+            throw new \Exception(
+                "Role not found: {$step->role_id}"
+            );
+        }
+
+        //Resolve user
+        $userId = match ($role->role_name) {
+            'Subject Officer' => $assignment->subject_officer_id,
+
+            'Check Officer' => $assignment->check_officer_id,
+
+            'Recommended Officer' => $assignment->recommended_officer_id,
+
+            'Recommended Officer-II' => $assignment->recommended_officer2_id,
+
+            'Recommended Officer-III' => $assignment->recommended_officer3_id,
+
+            'Chief Secretary' =>
+        $assignment->chief_sec_id,
+
+
+            'Admin' => $assignment->admin_user_id,
+
+            default => null,
+        };
+
+        if (!$userId) {
+            throw new \Exception(
+                "No {$role->role_name} assigned for office_id={$officeId}"
+            );
+        }
+
+        return User::findOrFail($userId);
     }
 
-    public function forward(Application $application, User $user, ?string $remarks, $signaturePath){
+    public function forward(Application $application, User $user, ?string $remarks,?string $signaturePath, string $action){
         $currentStep = $application->current_step;
 
         // check subject officer fill offie form
@@ -59,7 +99,7 @@ class WorkflowService{
             'application_id' => $application->id,
             'workflow_step_id' => $application->current_step_id,
             'user_id' => $user->id,
-            'action' => 'Forwarded',
+            'action' => $action,
             'remarks' => $remarks,
             'signature_path' => $signaturePath
         ]);
@@ -81,12 +121,12 @@ class WorkflowService{
         ]);
     }
 
-    public function return(Application $application, User $user, ?string $remarks, ?string $signaturePath){
+    public function return(Application $application, User $user, ?string $remarks, ?string $signaturePath, string $action){
         Application_workflow_histories::create([
             'application_id' => $application->id,
             'workflow_step_id' => $application->current_step_id,
             'user_id' => $user->id,
-            'action' => 'Returned',
+            'action' => $action,
             'remarks' => $remarks,
             'signature_path' => $signaturePath
         ]);
@@ -127,7 +167,7 @@ class WorkflowService{
         ]);
     }
 
-    public function approve(Application $application,User $user,?string $remarks){
+    public function approve(Application $application,User $user,?string $remarks, ?string $signaturePath){
         $currentStep = $application->current_step;
 
         if (!$currentStep) {
@@ -161,7 +201,8 @@ class WorkflowService{
             'workflow_step_id' => $application->current_step_id,
             'user_id' => $user->id,
             'action' => 'Approved',
-            'remarks' => $remarks ?? '-'
+            'remarks' => $remarks ?? '-',
+            'signature_path' => $signaturePath
         ]);
 
         // Mark application approved
