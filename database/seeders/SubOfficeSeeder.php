@@ -15,12 +15,14 @@ class SubOfficeSeeder extends Seeder
     {
         Office::create([
             'name' => 'පිරිස් හා පුහුණු අංශය',
-            'type' => 'sub section',
+            'type' => 'Chief Secretary Personal and Training',
+            'parent_office_id' => 3,
         ]);
 
         Office::create([
             'name' => 'පාලන අංශය',
-            'type' => 'sub section',
+            'type' => 'Chief Secretary Admin',
+            'parent_office_id' => 3,
         ]);
     }
 }

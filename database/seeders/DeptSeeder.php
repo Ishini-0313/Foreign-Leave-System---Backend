@@ -13,6 +13,30 @@ class DeptSeeder extends Seeder
      */
     public function run(): void
     {
+        // 11
+        Office::create([
+            'name' => 'දකුණු පළාත් පළාත් සමූපකාර සේවක කොමිෂන් සභාව',
+            'type' => 'Department',
+            'parent_office_id' => 8,
+            'workflow_template_id' => 6
+        ]);
+
+        // 12
+        Office::create([
+            'name' => 'දකුණු පළාත් පළාත් මෝටර් රථ ප්‍රවාහන දෙපාර්තමේන්තුව',
+            'type' => 'Department',
+            'parent_office_id' => 3,
+            'workflow_template_id' => 1
+        ]);
+
+        // 13
+        Office::create([
+            'name' => 'දකුණු පළාත් පළාත් ආදායම් දෙපාර්තමේන්තුව',
+            'type' => 'Department',
+            'parent_office_id' => 3,
+            'workflow_template_id' => 1
+        ]);
+
         // 14
         Office::create([
             'name' => 'දකුණු පළාත් අභ්‍යන්තර විගණන දෙපාර්තමේන්තුව',

@@ -54,30 +54,30 @@ class MinistrySeeder extends Seeder
         ]);
 
         // 6
-        Office::create([
-            'name' => 'දකුණු පළාත් පළාත් සමූපකාර සේවක කොමිෂන් සභාව',
-            'type' => 'Department',
-            'parent_office_id' => 11,
-            'workflow_template_id' => 6
-        ]);
+        // Office::create([
+        //     'name' => 'දකුණු පළාත් පළාත් සමූපකාර සේවක කොමිෂන් සභාව',
+        //     'type' => 'Department',
+        //     'parent_office_id' => 11,
+        //     'workflow_template_id' => 6
+        // ]);
 
         // 7
-        Office::create([
-            'name' => 'දකුණු පළාත් පළාත් මෝටර් රථ ප්‍රවාහන දෙපාර්තමේන්තුව',
-            'type' => 'Department',
-            'parent_office_id' => 3,
-            'workflow_template_id' => 1
-        ]);
+        // Office::create([
+        //     'name' => 'දකුණු පළාත් පළාත් මෝටර් රථ ප්‍රවාහන දෙපාර්තමේන්තුව',
+        //     'type' => 'Department',
+        //     'parent_office_id' => 3,
+        //     'workflow_template_id' => 1
+        // ]);
 
         // 8
-        Office::create([
-            'name' => 'දකුණු පළාත් පළාත් ආදායම් දෙපාර්තමේන්තුව',
-            'type' => 'Department',
-            'parent_office_id' => 3,
-            'workflow_template_id' => 1
-        ]);
+        // Office::create([
+        //     'name' => 'දකුණු පළාත් පළාත් ආදායම් දෙපාර්තමේන්තුව',
+        //     'type' => 'Department',
+        //     'parent_office_id' => 3,
+        //     'workflow_template_id' => 1
+        // ]);
 
-        // 9
+        // 6
         Office::create([
             'name' => 'දකුණු පළාත් ප්‍රධාන අමාත්‍යංශය',
             'type' => 'Ministry',
@@ -86,7 +86,7 @@ class MinistrySeeder extends Seeder
         ]);
 
 
-        // 10
+        // 7
         Office::create([
             'name' => 'දකුණු පළාත් අධ්‍යාපන අමාත්‍යංශය',
             'type' => 'Ministry',
@@ -94,7 +94,7 @@ class MinistrySeeder extends Seeder
             'workflow_template_id' => 1
         ]);
 
-        // 11
+        // 8
         Office::create([
             'name' => 'දකුණු පළාත් කෘෂිකර්ම අමාත්‍යංශය',
             'type' => 'Ministry',
@@ -102,7 +102,7 @@ class MinistrySeeder extends Seeder
             'workflow_template_id' => 1
         ]);
 
-        // 12
+        // 9
         Office::create([
             'name' => 'දකුණු පළාත් ධීවර අමාත්‍යංශය',
             'type' => 'Ministry',
@@ -110,7 +110,7 @@ class MinistrySeeder extends Seeder
             'workflow_template_id' => 1
         ]);
 
-        // 13
+        // 10
         Office::create([
             'name' => 'දකුණු පළාත් ක්‍රීඩා අමාත්‍යංශය',
             'type' => 'Ministry',
