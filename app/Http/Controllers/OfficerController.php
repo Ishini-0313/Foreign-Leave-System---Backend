@@ -20,7 +20,9 @@ class OfficerController extends Controller
 
     public function approve(Request $request, Application $application, WorkflowService $workflowService, ApprovalLetterService $approvalLetterService, CompletedApplicationService $completedApplicationService){
         $request->validate([
-            'remarks' => 'nullable|string'
+            'remarks' => 'nullable|string',
+            'approval' => 'nullable|in:approved,not_approved',
+            'signature' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
         // Make sure this application belongs to the logged-in responsible officer
@@ -30,9 +32,36 @@ class OfficerController extends Controller
             ], 403);
         }
 
+        $step = $application->current_step;
+        $roleName = $step?->role?->role_name;
+        $isCheifSecretary = $roleName == 'Chief Secretary';
+        
+        if ($isCheifSecretary) {
+            if (!$request->approval) {
+                return response()->json([
+                    'message' => 'Please select approved or not approved.'
+                ], 422);
+            }
+            if (!$request->hasFile('signature')) {
+                return response()->json([
+                    'message' => 'Please upload your signature.'
+                ], 422);
+            }
+        }
+
         DB::beginTransaction();
         try{
-            $workflowService->approve($application,auth()->user(),$request->remarks);
+            $signaturePath = null;
+            if ($request->hasFile('signature')) {
+                $signaturePath = $request->file('signature')->store('workflow_signatures', 'public');
+            }
+
+            $remarks = $isCheifSecretary
+                    ? $request->approval." ".$request->remarks
+                    : $request->remarks;
+
+
+            $workflowService->approve($application,auth()->user(),$remarks,$signaturePath);
 
             $approvalLetter = $approvalLetterService->generate(
                 $application->fresh()
@@ -120,13 +149,9 @@ class OfficerController extends Controller
             //     'signature_path' => $signaturePath,
             // ]);
 
-            $remarks = $isRecommendationOfficer
-                    ? $request->recommendation." ".$request->remarks
-                    : $request->remarks;
-
-            
+            $action = $isRecommendationOfficer ? "Recommended" : "Forwarded";   
              //move application to next step
-            $workflowService->forward($application, auth()->user(), $remarks, $signaturePath);
+            $workflowService->forward($application, auth()->user(), $request->remarks, $signaturePath, $action);
 
             DB::commit();
 
@@ -201,12 +226,10 @@ class OfficerController extends Controller
             //     'signature_path' => $signaturePath,
             // ]);
 
-            $remarks = $isRecommendationOfficer
-                    ? $request->recommendation." ".$request->remarks
-                    : $request->remarks;
+            $action = $isRecommendationOfficer ? "Not Recommended" : "Returned";
 
             // return to previous step
-            $workflowService->return($application,auth()->user(),$remarks, $signaturePath);
+            $workflowService->return($application,auth()->user(),$request->remarks, $signaturePath, $action);
 
             DB::commit();
 
