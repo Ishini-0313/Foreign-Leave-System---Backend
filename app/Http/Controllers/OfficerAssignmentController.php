@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class OfficerAssignmentController extends Controller{
 
-    //get subject, check , recommended officers and admin relevant to an office
+    //get current subject, check , recommended officers and admin relevant to an office
     public function show(Office $office){
         $assignment = OfficeAssignment::with([
             'subjectOfficer',
@@ -36,9 +36,7 @@ class OfficerAssignmentController extends Controller{
     //get all users of an office
     public function users(Office $office){
         $this->authorizeAssignment($office);
-
         $users = User::where('office_id',$office->id)->where('status','Active')->select('id','full_name','email')->orderBy('full_name')->get();
-
         return response()->json($users);
     }
 
@@ -61,47 +59,33 @@ class OfficerAssignmentController extends Controller{
 
         $recommendedId2 = $request->filled('recommended_officer2_id') ? (int) $request->recommended_officer2_id : null;
         $recommendedId3 = $request->filled('recommended_officer3_id') ? (int) $request->recommended_officer3_id : null;
-        $cheifSecId = $request->filled('chief_sec_id') ? (int) $request->chief_sec_id : null;
+        $chiefSecId = $request->filled('chief_sec_id') ? (int) $request->chief_sec_id : null;
         $adminId = $request->filled('admin_user_id') ? (int) $request->admin_user_id : null;
 
-        /*
-        |--------------------------------------------------------------------------
-        | 1. Check the three officer roles are different users
-        |--------------------------------------------------------------------------
-        */
-
+        //1. Check the three officer roles are different users
         if (
             $subjectId === $checkId ||
             $subjectId === $recommendedId ||
             $checkId === $recommendedId
         ) {
             return response()->json([
-                'message' =>
-                    'Subject Officer, Check Officer and Recommended Officer must be three different users.'
+                'message' =>'Subject Officer, Check Officer and Recommended Officer must be three different users.'
             ], 422);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | 2. Check assignment permission
-        |--------------------------------------------------------------------------
-        */
-
+        
+        // 2. Check assignment permission
         $this->authorizeAssignment($office);
 
-        /*
-        |--------------------------------------------------------------------------
-        | 3. Make sure selected users belong to this office
-        |--------------------------------------------------------------------------
-        */
-
+        
+        // 3. Make sure selected users belong to this office
         $selectedUserIds = array_filter([
             $subjectId,
             $checkId,
             $recommendedId,
             $recommendedId2,
             $recommendedId3,
-            $cheifSecId,
+            $chiefSecId,
             $adminId,
         ]);
 
@@ -113,28 +97,21 @@ class OfficerAssignmentController extends Controller{
             ->toArray();
 
         foreach ($selectedUserIds as $userId) {
-
             if (!in_array($userId, $validUserIds)) {
-
                 return response()->json([
-                    'message' =>
-                        "Selected user ID {$userId} does not belong to this office."
+                    'message' => "Selected user ID {$userId} does not belong to this office."
                 ], 422);
             }
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | 4. Role IDs
-        |--------------------------------------------------------------------------
-        */
-
+        
+        // 4. Role IDs
         $subjectRoleId = Role::where('role_name','Subject Officer')->value('id');
         $checkRoleId = Role::where('role_name','Check Officer')->value('id');
         $recommendedRoleId = Role::where('role_name','Recommended Officer')->value('id');
         $recommended2RoleId = Role::where('role_name','Recommended Officer-II')->value('id');
         $recommended3RoleId = Role::where('role_name','Recommended Officer-III')->value('id');
-        $cheifSecRoleId = Role::where('role_name','Chief Secretary')->value('id');
+        $chiefSecRoleId = Role::where('role_name','Chief Secretary')->value('id');
         $adminRoleId = Role::where('role_name','Admin')->value('id');
 
         if (
@@ -143,7 +120,7 @@ class OfficerAssignmentController extends Controller{
             !$recommendedRoleId ||
             !$recommended2RoleId ||
             !$recommended3RoleId ||
-            !$cheifSecId ||
+            !$chiefSecRoleId ||
             !$adminRoleId 
         ) {
             return response()->json([
@@ -151,12 +128,8 @@ class OfficerAssignmentController extends Controller{
             ], 500);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | 5. Save assignment
-        |--------------------------------------------------------------------------
-        */
-
+        
+        // 5. Save assignment
         DB::transaction(function () use (
             $office,
             $subjectId,
@@ -164,29 +137,16 @@ class OfficerAssignmentController extends Controller{
             $recommendedId,
             $recommendedId2,
             $recommendedId3,
-            $cheifSecId,
+            $chiefSecId,
             $adminId,
             $subjectRoleId,
             $checkRoleId,
             $recommendedRoleId,
             $recommended2RoleId,
             $recommended3RoleId,
-            $cheifSecRoleId,
+            $chiefSecRoleId,
             $adminRoleId,
         ) {
-
-            /*
-            |--------------------------------------------------------------------------
-            | IMPORTANT
-            |
-            | If users can have multiple office roles, role_id should NOT be
-            | overwritten here.
-            |
-            | But because you explicitly requested role_id updates, the following
-            | updates the selected user's role_id.
-            |--------------------------------------------------------------------------
-            */
-
             User::where('id', $subjectId)->update(['role_id' => $subjectRoleId]);
 
             User::where('id', $checkId)->update(['role_id' => $checkRoleId]);
@@ -197,14 +157,10 @@ class OfficerAssignmentController extends Controller{
 
             User::where('id', $recommendedId3)->update(['role_id' => $recommended3RoleId]);
 
-            User::where('id', $cheifSecId)->update(['role_id' => $cheifSecRoleId]);
+            User::where('id', $chiefSecId)->update(['role_id' => $chiefSecRoleId]);
 
-            /*
-            |--------------------------------------------------------------------------
-            | Save office assignment
-            |--------------------------------------------------------------------------
-            */
-
+            
+            //Save office assignment
             OfficeAssignment::updateOrCreate(
                 [
                     'office_id' => $office->id,
@@ -215,19 +171,15 @@ class OfficerAssignmentController extends Controller{
                     'recommended_officer_id' => $recommendedId,
                     'recommended_officer2_id' => $recommendedId2,
                     'recommended_officer3_id' => $recommendedId3,
-                    'chief_sec_id' => $cheifSecId,
+                    'chief_sec_id' => $chiefSecId,
                     'admin_user_id' => $adminId,
                     'assigned_by' => auth()->id(),
                 ]
             );
         });
 
-        /*
-        |--------------------------------------------------------------------------
-        | 6. Return updated assignment
-        |--------------------------------------------------------------------------
-        */
-
+        
+        // 6. Return updated assignment
         $assignment = OfficeAssignment::with([
             'office',
             'subjectOfficer',
@@ -250,161 +202,76 @@ class OfficerAssignmentController extends Controller{
 
     
 
-    private function authorizeAssignment(Office $office)
-{
-    $currentUser = auth()->user();
+    private function authorizeAssignment(Office $office){
+        $currentUser = auth()->user();
 
-    /*
-    |--------------------------------------------------------------------------
-    | SYSTEM ADMIN
-    |--------------------------------------------------------------------------
-    |
-    | System Admin can assign ALL roles of the
-    | Chief Secretary Personal & Training office.
-    |
-    */
+        // SYSTEM ADMIN -  System Admin can assign ALL roles of the Chief Secretary Personal & Training office.
+        if ($currentUser->role?->role_name === 'System Admin') {
+            if ($office->type === 'Chief Secretary Personal and Training') {
+                return;
+            }
 
-    if ($currentUser->role?->role_name === 'System Admin') {
-
-        if (
-            $office->type ===
-            'Chief Secretary Personal and Training'
-        ) {
-            return;
-        }
-
-        abort(
-            403,
-            'System Admin can only assign roles of the Chief Secretary Personal and Training office.'
-        );
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | CHILD OFFICE
-    |--------------------------------------------------------------------------
-    |
-    | Admin of parent office can assign the three officers
-    | and admin of the child office.
-    |
-    */
-
-    if ($office->parent_office_id) {
-
-        $parentOffice = $office->parent;
-
-        if (!$parentOffice) {
             abort(
                 403,
-                'Parent office not found.'
+                'System Admin can only assign roles of the Chief Secretary Personal and Training office.'
             );
         }
 
-        $parentAdmin = OfficeAssignment::where(
-            'office_id',
-            $parentOffice->id
-        )
-        ->where(
-            'admin_user_id',
-            $currentUser->id
-        )
-        ->exists();
+        // CHILD OFFICE - Admin of parent office can assign the three officers and admin of the child office.
+        if ($office->parent_office_id) {
+            $parentOffice = $office->parent;
+            if (!$parentOffice) {
+                abort(403, 'Parent office not found.');
+            }
 
-        if (!$parentAdmin) {
+            $parentAdmin = OfficeAssignment::where('office_id',$parentOffice->id)
+                ->where('admin_user_id',$currentUser->id)
+                ->exists();
+
+            if (!$parentAdmin) {
+                abort(403,'You are not authorized to assign this office.');
+            }
+            return;
+        }
+
+        //MINISTRY - Ministry has no parent. Therefore Ministry officers are assigned by Chief Secretary Admin.
+        if ($office->type === 'Ministry') {
+            if ($this->isPersonalTrainingAdmin($currentUser)) {
+                return;
+            }
+
+            abort(403,'Only Chief Secretary Admin can assign Ministry officers.');
+        }
+
+        //CHIEF SECRETARY ADMIN - Its admin is assigned by the admin of Chief Secretary Personal & Training.
+        if ($office->type === 'Chief Secretary Admin') {
+            if ($this->isPersonalTrainingAdmin($currentUser)) {
+                return;
+            }
+
+            abort(403,'Only Chief Secretary Personal and Training Admin can assign this office.');
+        }
+
+        //CHIEF SECRETARY PERSONAL & TRAINING - System Admin is handled at the beginning.
+        if ($office->type === 'Chief Secretary Personal and Training') {
             abort(
                 403,
                 'You are not authorized to assign this office.'
             );
         }
 
-        return;
+        //DEFAULT
+        abort(403,'You are not authorized to assign this office.');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | MINISTRY
-    |--------------------------------------------------------------------------
-    |
-    | Ministry has no parent.
-    | Therefore Ministry officers are assigned by
-    | Chief Secretary Admin.
-    |
-    */
-
-    if ($office->type === 'Ministry') {
-
-        if ($this->isChiefSecretaryAdmin($currentUser)) {
-            return;
-        }
-
-        abort(
-            403,
-            'Only Chief Secretary Admin can assign Ministry officers.'
-        );
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | CHIEF SECRETARY ADMIN
-    |--------------------------------------------------------------------------
-    |
-    | Its admin is assigned by the admin of
-    | Chief Secretary Personal & Training.
-    |
-    */
-
-    if ($office->type === 'Chief Secretary Admin') {
-
-        if ($this->isPersonalTrainingAdmin($currentUser)) {
-            return;
-        }
-
-        abort(
-            403,
-            'Only Chief Secretary Personal and Training Admin can assign this office.'
-        );
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | CHIEF SECRETARY PERSONAL & TRAINING
-    |--------------------------------------------------------------------------
-    |
-    | System Admin is handled at the beginning.
-    |
-    */
-
-    if (
-        $office->type ===
-        'Chief Secretary Personal and Training'
-    ) {
-
-        abort(
-            403,
-            'You are not authorized to assign this office.'
-        );
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | DEFAULT
-    |--------------------------------------------------------------------------
-    */
-
-    abort(
-        403,
-        'You are not authorized to assign this office.'
-    );
-}
-
-    private function isChiefSecretaryAdmin(User $user): bool{
-        // Implement according to your actual office/role structure.
-        return OfficeAssignment::where('admin_user_id',$user->id)
-            ->whereHas('office', function ($query) {
-                $query->where('type', 'Chief Secretary Admin');
-            })
-            ->exists();
-    }
+    // private function isChiefSecretaryAdmin(User $user): bool{
+    //     // Implement according to your actual office/role structure.
+    //     return OfficeAssignment::where('admin_user_id',$user->id)
+    //         ->whereHas('office', function ($query) {
+    //             $query->where('type', 'Chief Secretary Admin');
+    //         })
+    //         ->exists();
+    // }
 
     private function isPersonalTrainingAdmin(User $user): bool{
         return OfficeAssignment::where('admin_user_id', $user->id)
@@ -424,27 +291,27 @@ class OfficerAssignmentController extends Controller{
         }
 
 
-        //2. CHIEF SECRETARY PERSONAL & TRAINING ADMIN -  Can manage Chief Secretary Admin
-        $specialOfficeIds = Office::where('type','Chief Secretary Admin')
-            ->whereHas('assignment', function ($query) use ($user) {
-                $query->where('admin_user_id',$user->id);
-            })
-            ->pluck('id');
+        //2. CHIEF SECRETARY PERSONAL & TRAINING ADMIN -  Can manage Chief Secretary Admin and ministries
+        $specialOfficeIds = collect();
+        $ministryIds = collect();
 
-        
-        //3. CHIEF SECRETARY ADMIN'S ADMIN - Can manage ALL ministries because ministries don't have parent offices.
-        $isChiefSecretaryAdmin = OfficeAssignment::where('admin_user_id',$user->id)
+        $isChiefSecretaryPersonalTrainingAdmin = OfficeAssignment::where('admin_user_id',$user->id)
             ->whereHas('office', function ($query) {
-                $query->where('type','Chief Secretary Admin');
+                $query->where('type', 'Chief Secretary Personal and Training');
             })
             ->exists();
 
-        $ministryIds = collect();
+        if ($isChiefSecretaryPersonalTrainingAdmin) {
+            // Can manage Chief Secretary Admin office
+            $specialOfficeIds = Office::where('type', 'Chief Secretary Admin')
+                ->where('status', 'Active')
+                ->pluck('id');
 
-        if ($isChiefSecretaryAdmin) {
-            $ministryIds = Office::where('type','Ministry')->where('status','Active')->pluck('id');
+            // Can manage all Ministries
+            $ministryIds = Office::where('type', 'Ministry')
+                ->where('status', 'Active')
+                ->pluck('id');
         }
-
 
         // 4. NORMAL CHILD OFFICES - Parent office admin manages child offices.
         $managedOfficeIds = Office::whereHas('parent',function ($query) use ($user) {

@@ -162,25 +162,13 @@ Route::post('/reset-password', [PasswordController::class, 'resetPassword']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::get(
-        '/offices/assignable',
-        [OfficerAssignmentController::class, 'assignableOffices']
-    );
+    Route::get('/offices/assignable', [OfficerAssignmentController::class, 'assignableOffices']);
 
-    Route::get(
-        '/offices/{office}/assignment',
-        [OfficerAssignmentController::class, 'show']
-    );
+    Route::get('/offices/{office}/assignment', [OfficerAssignmentController::class, 'show']);
 
-    Route::get(
-        '/offices/{office}/users',
-        [OfficerAssignmentController::class, 'users']
-    );
+    Route::get('/offices/{office}/users', [OfficerAssignmentController::class, 'users']);
 
-    Route::post(
-        '/offices/{office}/assignment',
-        [OfficerAssignmentController::class, 'assign']
-    );
+    Route::post('/offices/{office}/assignment', [OfficerAssignmentController::class, 'assign']);
 
     Route::get(
         '/my-admin-offices',

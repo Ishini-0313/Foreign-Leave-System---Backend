@@ -14,7 +14,7 @@ class OfficeAssignment extends Model
         'check_officer_id',
         'recommended_officer_id',
         'recommended_officer2_id',
-        'recommended_officer3_id,',
+        'recommended_officer3_id',
         'chief_sec_id',
         'admin_user_id',
         'assigned_by'
