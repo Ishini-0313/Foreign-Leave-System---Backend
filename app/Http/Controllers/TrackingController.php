@@ -51,25 +51,6 @@ class TrackingController extends Controller
             if ($currentStep &&$step->sequence_no < $currentStep->sequence_no) {
                 $step->status = 'completed';
             }
-
-            //Completed previous steps
-
-            // current step
-            // if($step->id == $application->current_step_id){
-            //     $step->status = 'current';
-            //     continue;
-            // }
-
-            //returned step
-            // if($latestHistory && $latestHistory->action == 'Returned' && $latestHistory->workflow_step_id == $step->id){
-            //     $step->status = 'returned';
-            //     continue;
-            // }
-
-            // completed step
-            // if($step->sequence_no < optional($application->current_step)->sequence_no){
-            //     $step->status = 'completed';
-            // }
             
         }
 
