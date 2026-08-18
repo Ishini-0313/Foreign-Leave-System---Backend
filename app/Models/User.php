@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
+use App\Models\UserOfficeRole;
 
 class User extends Authenticatable implements CanResetPassword
 {
@@ -35,5 +36,13 @@ class User extends Authenticatable implements CanResetPassword
 
     public function designation(){
         return $this->belongsTo(Designation::class);
+    }
+
+    public function officeRoles(){
+        return $this->hasMany(UserOfficeRole::class);
+    }
+
+    public function assignedRoles(){
+        return $this->belongsToMany(Role::class,'user_office_roles')->withPivot('office_id')->withTimestamps();
     }
 }
