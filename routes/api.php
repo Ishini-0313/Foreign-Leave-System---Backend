@@ -132,27 +132,61 @@ Route::post(
 Route::post('/forgot-password', [PasswordController::class, 'forgotPassword']);
 Route::post('/reset-password', [PasswordController::class, 'resetPassword']);
 
+// Route::middleware('auth:sanctum')->group(function () {
+
+//     Route::get(
+//         '/offices/assignable',
+//         [OfficerAssignmentController::class, 'assignableOffices']
+//     );
+
+//     Route::get(
+//         '/offices/{office}/assignment',
+//         [OfficerAssignmentController::class, 'show']
+//     );
+
+//     Route::get(
+//         '/offices/{office}/assignment/users',
+//         [OfficerAssignmentController::class, 'users']
+//     );
+
+//     Route::post(
+//         '/offices/{office}/assignment',
+//         [OfficerAssignmentController::class, 'assign']
+//     );
+
+//     Route::post(
+//         '/office-assignments/bootstrap-cs-admin',
+//         [OfficerAssignmentController::class, 'assignCsPersonalTrainingAdmin']
+//     );
+// });
+
 Route::middleware('auth:sanctum')->group(function () {
-    //Officer assignment management
+
     Route::get(
-        '/admin/officer-management/institutes',
-        [OfficerAssignmentController::class, 'institutes']
+        '/offices/assignable',
+        [OfficerAssignmentController::class, 'assignableOffices']
     );
 
     Route::get(
-        '/admin/officer-management/institutes/{office}/users',
-        [OfficerAssignmentController::class, 'users']
-    );
-
-    Route::get(
-        '/admin/officer-management/institutes/{office}/assignments',
+        '/offices/{office}/assignment',
         [OfficerAssignmentController::class, 'show']
     );
 
+    Route::get(
+        '/offices/{office}/users',
+        [OfficerAssignmentController::class, 'users']
+    );
+
     Route::post(
-        '/admin/officer-management/institutes/{office}/assign',
+        '/offices/{office}/assignment',
         [OfficerAssignmentController::class, 'assign']
     );
+
+    Route::get(
+        '/my-admin-offices',
+        [OfficerAssignmentController::class, 'myAdminOffices']
+    );
+
 });
 
 Route::middleware('auth:sanctum')->group(function () {
