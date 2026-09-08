@@ -13,6 +13,7 @@ use App\Models\Office;
 use App\Models\Workflow_steps;
 use App\Models\Application_amendments;
 use App\Models\ApprovalLetter;
+use App\Models\ApplicationOfficeDocument;
 
 class Application extends Model
 {
@@ -29,6 +30,7 @@ class Application extends Model
         'status',
 
         'approved_at',
+        'approved_with_salary',
         
         'name',
         'position',
@@ -72,6 +74,13 @@ class Application extends Model
         'relationship_of_person_meeting_expenditure',
 
         'signature_path',
+
+        'leave_nature',
+        'has_letter_of_invitation_for_training',
+        'has_approval_letter',
+        'has_government_also_been_invited_for_training',
+        'has_government_nominated_to_participate_in_it',
+        'institution_designated_in_that_manner',
     ];
 
     protected $appends = ['is_editable'];
@@ -98,6 +107,10 @@ class Application extends Model
 
     public function documents(){
         return $this->hasMany(Document::class);
+    }
+
+    public function officeDocuments(){
+        return $this->hasMany(ApplicationOfficeDocument::class);
     }
 
     public function workflowHistories(){

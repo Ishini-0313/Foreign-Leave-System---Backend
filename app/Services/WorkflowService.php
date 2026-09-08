@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\ApplicationReturnedMail;
 use App\Models\OfficeAssignment;
 use App\Models\Role;
+use App\Models\ApplicationOfficeDocument;
+use Illuminate\Http\UploadedFile;
 
 
 class WorkflowService{
@@ -83,7 +85,7 @@ class WorkflowService{
         return User::findOrFail($userId);
     }
 
-    public function forward(Application $application, User $user, ?string $remarks,?string $signaturePath, string $action){
+    public function forward(Application $application, User $user, ?string $remarks,?string $signaturePath, string $action,){
         $currentStep = $application->current_step;
 
         // check subject officer fill offie form
@@ -91,6 +93,12 @@ class WorkflowService{
             if (!$application->availableLeaveInfo) {
                 throw new \Exception(
                     "Please complete the 'Particulars of Available Leave' section before forwarding this application."
+                );
+            }
+
+            if(!$application->officeDocuments()->exists()){
+                throw new \Exception(
+                    "Please upload the required documents before forwarding this application."
                 );
             }
         }
@@ -167,7 +175,7 @@ class WorkflowService{
         ]);
     }
 
-    public function approve(Application $application,User $user,?string $remarks, ?string $signaturePath){
+    public function approve(Application $application,User $user,?string $remarks, ?string $signaturePath, string $action){
         $currentStep = $application->current_step;
 
         if (!$currentStep) {
@@ -195,12 +203,18 @@ class WorkflowService{
             );
         }
 
+        if($action == "Approved with salary"){
+            $approved_with_salary = 1;
+        }else{
+            $approved_with_salary = 0;
+        }
+
         // Create approval history
         Application_workflow_histories::create([
             'application_id' => $application->id,
             'workflow_step_id' => $application->current_step_id,
             'user_id' => $user->id,
-            'action' => 'Approved',
+            'action' => $action,
             'remarks' => $remarks ?? '-',
             'signature_path' => $signaturePath
         ]);
@@ -208,6 +222,7 @@ class WorkflowService{
         // Mark application approved
         $application->update([
             'status' => 'Approved',
+            'approved_with_salary' => $approved_with_salary,
             'approved_at' => now(),
             'current_assigned_user_id' => null,
             'current_assigned_office_id' => null,

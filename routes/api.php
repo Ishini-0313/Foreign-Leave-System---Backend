@@ -19,6 +19,8 @@ use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\OfficerAssignmentController;
 use App\Http\Controllers\ApprovalLetterController;
 use App\Http\Controllers\CompletedApplicationController;
+use App\Http\Controllers\AnnualReportController;
+use App\Http\Controllers\OfficeDocumentsController;
 
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
@@ -205,6 +207,22 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get(
         '/applications/{application}/completed-form-126/download',
         [CompletedApplicationController::class, 'download126']
+    );
+});
+
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get(
+        '/reports/annual-foreign-leave',
+        [AnnualReportController::class, 'export']
+    );
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post(
+        '/applications/{application}/office-documents',
+        [OfficeDocumentsController::class, 'uploadOfficeDocuments']
     );
 });
 
