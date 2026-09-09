@@ -21,7 +21,7 @@ class OfficerController extends Controller
     public function approve(Request $request, Application $application, WorkflowService $workflowService, ApprovalLetterService $approvalLetterService, CompletedApplicationService $completedApplicationService){
         $request->validate([
             'remarks' => 'nullable|string',
-            'approval' => 'nullable|in:approved,not_approved',
+            'approval' => 'nullable|in:approved_with_salary,approved_without_salary,not_approved',
             'signature' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
@@ -56,12 +56,18 @@ class OfficerController extends Controller
                 $signaturePath = $request->file('signature')->store('workflow_signatures', 'public');
             }
 
-            $remarks = $isCheifSecretary
-                    ? $request->approval." ".$request->remarks
-                    : $request->remarks;
+            if($request->approval == "approved_with_salary"){
+                $action = "Approved with salary";
+            }else if($request->approval == "approved_without_salary"){
+                $action = "Approved without salary";
+            }else if($request->approval == "not_approved"){
+                $action = "Not Approved";
+            }else{
+                $action = "";
+            }
 
 
-            $workflowService->approve($application,auth()->user(),$remarks,$signaturePath);
+            $workflowService->approve($application,auth()->user(),$request->remarks,$signaturePath,$action);
 
             $approvalLetter = $approvalLetterService->generate(
                 $application->fresh()
@@ -97,7 +103,7 @@ class OfficerController extends Controller
     public function forward(Request $request, Application $application, WorkflowService $workflowService){
         $request->validate([
             'remarks' => 'nullable|string',
-            'recommendation' => 'nullable|in:recommended,not_recommended',
+            'recommendation' => 'nullable|in:recommended_with_salary,recommended_without_salary,not_recommended',
             'signature' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
@@ -136,20 +142,17 @@ class OfficerController extends Controller
                 $signaturePath = $request->file('signature')->store('workflow_signatures', 'public');
             }
 
-            //save workflow history
-            // $history = Application_workflow_histories::create([
-            //     'application_id' => $application->id,
-            //     'user_id' => auth()->id(),
-            //     'step_id' => $application->current_step_id,
-            //     'remarks' => $request->remarks,
-            //     'action' => 'Returned',
-            //     'recommendation' => $isRecommendationOfficer
-            //         ? $request->recommendation
-            //         : null,
-            //     'signature_path' => $signaturePath,
-            // ]);
+            if($request->recommendation == "recommended_with_salary"){
+                $recommendation = "Recommended with salary";
+            }else if($request->recommendation == "recommended_without_salary"){
+                $recommendation = "Recommended without salary";
+            }else if($request->recommendation == "not_recommended"){
+                $recommendation = "Not recommended";
+            }else{
+                $recommendation = "";
+            }
 
-            $action = $isRecommendationOfficer ? "Recommended" : "Forwarded";   
+            $action = $isRecommendationOfficer ? $recommendation : "Forwarded";   
              //move application to next step
             $workflowService->forward($application, auth()->user(), $request->remarks, $signaturePath, $action);
 
@@ -174,7 +177,7 @@ class OfficerController extends Controller
     public function return(Request $request, Application $application, WorkflowService $workflowService){
         $request->validate([
             'remarks' => 'nullable|string',
-            'recommendation' => 'nullable|in:recommended,not_recommended',
+            'recommendation' => 'nullable|in:recommended_with_salary,recommended_without_salary,not_recommended',
             'signature' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
@@ -226,7 +229,7 @@ class OfficerController extends Controller
             //     'signature_path' => $signaturePath,
             // ]);
 
-            $action = $isRecommendationOfficer ? "Not Recommended" : "Returned";
+            $action = $isRecommendationOfficer ? "Not Recommended & Returned" : "Returned";
 
             // return to previous step
             $workflowService->return($application,auth()->user(),$request->remarks, $signaturePath, $action);
