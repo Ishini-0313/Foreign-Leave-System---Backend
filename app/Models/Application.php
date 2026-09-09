@@ -81,6 +81,12 @@ class Application extends Model
         'has_government_also_been_invited_for_training',
         'has_government_nominated_to_participate_in_it',
         'institution_designated_in_that_manner',
+
+        'departure_time',
+        'return_time',
+        'provides_other_allowances_that_provide_by_awarding_institution',
+        'amount_to_be_paid',
+        'have_received_warm_clothing_allowance_within_five_years'
     ];
 
     protected $appends = ['is_editable'];

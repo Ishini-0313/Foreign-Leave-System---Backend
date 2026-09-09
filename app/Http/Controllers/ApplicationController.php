@@ -89,6 +89,19 @@ class ApplicationController extends Controller
                 "relationship_of_the_person_sending_it"=> $request->relationship_of_the_person_sending_it,
                 "cost_maintanence_abroad" => $request->cost_maintanence_abroad,
                 "relationship_of_person_meeting_expenditure"=> $request->relationship_of_person_meeting_expenditure,
+
+                "leave_nature" => $request->leave_nature,
+                "has_letter_of_invitation_for_training" => $request->has_letter_of_invitation_for_training,
+                "has_approval_letter" => $request->has_approval_letter,
+                "has_government_also_been_invited_for_training" => $request->has_government_also_been_invited_for_training,
+                "has_government_nominated_to_participate_in_it" => $request->has_government_nominated_to_participate_in_it,
+                "institution_designated_in_that_manner" => $request->institution_designated_in_that_manner,
+
+                "departure_time" => $request->departure_time,
+                "return_time" => $request->return_time,
+                "provides_other_allowances_that_provide_by_awarding_institution" => $request->provides_other_allowances_that_provide_by_awarding_institution,
+                "amount_to_be_paid" => $request->amount_to_be_paid,
+                "have_received_warm_clothing_allowance_within_five_years" => $request->have_received_warm_clothing_allowance_within_five_years,
             ]);
 
             $workflowService->assignFirstStep($application);
@@ -302,6 +315,19 @@ class ApplicationController extends Controller
                 "relationship_of_the_person_sending_it"=> $request->relationship_of_the_person_sending_it,
                 "cost_maintanence_abroad" => $request->cost_maintanence_abroad,
                 "relationship_of_person_meeting_expenditure"=> $request->relationship_of_person_meeting_expenditure,
+
+                "leave_nature" => $request->leave_nature,
+                "has_letter_of_invitation_for_training" => $request->has_letter_of_invitation_for_training,
+                "has_approval_letter" => $request->has_approval_letter,
+                "has_government_also_been_invited_for_training" => $request->has_government_also_been_invited_for_training,
+                "has_government_nominated_to_participate_in_it" => $request->has_government_nominated_to_participate_in_it,
+                "institution_designated_in_that_manner" => $request->institution_designated_in_that_manner,
+
+                "departure_time" => $request->departure_time,
+                "return_time" => $request->return_time,
+                "provides_other_allowances_that_provide_by_awarding_institution" => $request->provides_other_allowances_that_provide_by_awarding_institution,
+                "amount_to_be_paid" => $request->amount_to_be_paid,
+                "have_received_warm_clothing_allowance_within_five_years" => $request->have_received_warm_clothing_allowance_within_five_years,
             ]);
 
             $funds = json_decode($request->goslFunds,true);
@@ -434,6 +460,7 @@ class ApplicationController extends Controller
             'goslFunds',
             'previousTravels',
             'documents',
+            'officeDocuments',
             'ministry',
             'institute',
             'availableLeaveInfo',
@@ -466,11 +493,25 @@ class ApplicationController extends Controller
     }
 
     public function documents($id){
-        $application = Application::with('documents')->findOrFail($id);
+        $application = Application::with([
+        'documents',
+        'officeDocuments'
+    ])->findOrFail($id);
 
-        return response()->json(
-            $application->documents
-        );
+    $documents = $application->documents
+        ->map(function ($document) {
+            $document->uploaded_by_type = 'applicant';
+            return $document;
+        })
+        ->concat(
+            $application->officeDocuments->map(function ($document) {
+                $document->uploaded_by_type = 'subject_officer';
+                return $document;
+            })
+        )
+        ->values();
+
+    return response()->json($documents);
     }
 
     
