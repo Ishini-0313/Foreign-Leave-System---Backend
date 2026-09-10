@@ -25,6 +25,7 @@ class Workflow_step_seeder extends Seeder
             ['workflow_id'=>1, 'sequence_no'=>8, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>5],
             ['workflow_id'=>1, 'sequence_no'=>9, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>6],
             ['workflow_id'=>1, 'sequence_no'=>10, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>1, 'sequence_no'=>11, 'office_reference'=>'ගිණුම් අංශය', 'role_id'=>10],
 
             //2
             ['workflow_id'=>2, 'sequence_no'=>1, 'office_reference'=>'Applicant', 'role_id'=>1],
@@ -40,6 +41,7 @@ class Workflow_step_seeder extends Seeder
             ['workflow_id'=>2, 'sequence_no'=>11, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>5],
             ['workflow_id'=>2, 'sequence_no'=>12, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>6],
             ['workflow_id'=>2, 'sequence_no'=>13, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>2, 'sequence_no'=>14, 'office_reference'=>'ගිණුම් අංශය', 'role_id'=>10],
 
             //3
             ['workflow_id'=>3, 'sequence_no'=>1, 'office_reference'=>'Applicant', 'role_id'=>1],
@@ -55,6 +57,7 @@ class Workflow_step_seeder extends Seeder
             ['workflow_id'=>3, 'sequence_no'=>11, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>5],
             ['workflow_id'=>3, 'sequence_no'=>12, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>6],
             ['workflow_id'=>3, 'sequence_no'=>13, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>3, 'sequence_no'=>14, 'office_reference'=>'ගිණුම් අංශය', 'role_id'=>10],
 
             //4
             ['workflow_id'=>4, 'sequence_no'=>1, 'office_reference'=>'Applicant', 'role_id'=>1],
@@ -70,6 +73,7 @@ class Workflow_step_seeder extends Seeder
             ['workflow_id'=>4, 'sequence_no'=>11, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>5],
             ['workflow_id'=>4, 'sequence_no'=>12, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>6],
             ['workflow_id'=>4, 'sequence_no'=>13, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>4, 'sequence_no'=>14, 'office_reference'=>'ගිණුම් අංශය', 'role_id'=>10],
 
             //5
             ['workflow_id'=>5, 'sequence_no'=>1, 'office_reference'=>'Applicant', 'role_id'=>1],
@@ -85,6 +89,7 @@ class Workflow_step_seeder extends Seeder
             ['workflow_id'=>5, 'sequence_no'=>11, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>5],
             ['workflow_id'=>5, 'sequence_no'=>12, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>6],
             ['workflow_id'=>5, 'sequence_no'=>13, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>5, 'sequence_no'=>14, 'office_reference'=>'ගිණුම් අංශය', 'role_id'=>10],
 
             //6
             ['workflow_id'=>6, 'sequence_no'=>1, 'office_reference'=>'Applicant', 'role_id'=>1],
@@ -100,6 +105,7 @@ class Workflow_step_seeder extends Seeder
             ['workflow_id'=>6, 'sequence_no'=>11, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>5],
             ['workflow_id'=>6, 'sequence_no'=>12, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>6],
             ['workflow_id'=>6, 'sequence_no'=>13, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>6, 'sequence_no'=>14, 'office_reference'=>'ගිණුම් අංශය', 'role_id'=>10],
 
             //7
             ['workflow_id'=>7, 'sequence_no'=>1, 'office_reference'=>'Applicant', 'role_id'=>1],
@@ -115,6 +121,7 @@ class Workflow_step_seeder extends Seeder
             ['workflow_id'=>7, 'sequence_no'=>11, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>5],
             ['workflow_id'=>7, 'sequence_no'=>12, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>6],
             ['workflow_id'=>7, 'sequence_no'=>13, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>7, 'sequence_no'=>14, 'office_reference'=>'ගිණුම් අංශය', 'role_id'=>10],
 
             //8
             ['workflow_id'=>8, 'sequence_no'=>1, 'office_reference'=>'Applicant', 'role_id'=>1],
@@ -133,6 +140,7 @@ class Workflow_step_seeder extends Seeder
             ['workflow_id'=>8, 'sequence_no'=>14, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>5],
             ['workflow_id'=>8, 'sequence_no'=>15, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>6],
             ['workflow_id'=>8, 'sequence_no'=>16, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>8, 'sequence_no'=>17, 'office_reference'=>'ගිණුම් අංශය', 'role_id'=>10],
 
             //9
             ['workflow_id'=>9, 'sequence_no'=>1, 'office_reference'=>'Applicant', 'role_id'=>1],
@@ -151,6 +159,7 @@ class Workflow_step_seeder extends Seeder
             ['workflow_id'=>9, 'sequence_no'=>14, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>5],
             ['workflow_id'=>9, 'sequence_no'=>15, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>6],
             ['workflow_id'=>9, 'sequence_no'=>16, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>9, 'sequence_no'=>17, 'office_reference'=>'ගිණුම් අංශය', 'role_id'=>10],
 
             //10
             ['workflow_id'=>10, 'sequence_no'=>1, 'office_reference'=>'Applicant', 'role_id'=>1],
@@ -172,6 +181,7 @@ class Workflow_step_seeder extends Seeder
             ['workflow_id'=>10, 'sequence_no'=>17, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>5],
             ['workflow_id'=>10, 'sequence_no'=>18, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>6],
             ['workflow_id'=>10, 'sequence_no'=>19, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>10, 'sequence_no'=>20, 'office_reference'=>'ගිණුම් අංශය', 'role_id'=>10],
 
             //11
             ['workflow_id'=>11, 'sequence_no'=>1, 'office_reference'=>'Applicant', 'role_id'=>1],
@@ -192,7 +202,8 @@ class Workflow_step_seeder extends Seeder
             ['workflow_id'=>11, 'sequence_no'=>16, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>4],
             ['workflow_id'=>11, 'sequence_no'=>17, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>5],
             ['workflow_id'=>11, 'sequence_no'=>18, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>6],
-            ['workflow_id'=>12, 'sequence_no'=>19, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>11, 'sequence_no'=>19, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>11, 'sequence_no'=>20, 'office_reference'=>'ගිණුම් අංශය', 'role_id'=>10],
 
             //12
             ['workflow_id'=>12, 'sequence_no'=>1, 'office_reference'=>'Applicant', 'role_id'=>1],
@@ -213,7 +224,8 @@ class Workflow_step_seeder extends Seeder
             ['workflow_id'=>12, 'sequence_no'=>16, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>4],
             ['workflow_id'=>12, 'sequence_no'=>17, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>5],
             ['workflow_id'=>12, 'sequence_no'=>18, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>6],
-            ['workflow_id'=>13, 'sequence_no'=>19, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>12, 'sequence_no'=>19, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>12, 'sequence_no'=>20, 'office_reference'=>'ගිණුම් අංශය', 'role_id'=>10],
 
             //13
             ['workflow_id'=>13, 'sequence_no'=>1, 'office_reference'=>'Applicant', 'role_id'=>1],
@@ -234,7 +246,8 @@ class Workflow_step_seeder extends Seeder
             ['workflow_id'=>13, 'sequence_no'=>16, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>4],
             ['workflow_id'=>13, 'sequence_no'=>17, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>5],
             ['workflow_id'=>13, 'sequence_no'=>18, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>6],
-            ['workflow_id'=>14, 'sequence_no'=>19, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>13, 'sequence_no'=>19, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>13, 'sequence_no'=>20, 'office_reference'=>'ගිණුම් අංශය', 'role_id'=>10],
 
             //14
             ['workflow_id'=>14, 'sequence_no'=>1, 'office_reference'=>'Applicant', 'role_id'=>1],
@@ -255,7 +268,8 @@ class Workflow_step_seeder extends Seeder
             ['workflow_id'=>14, 'sequence_no'=>16, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>4],
             ['workflow_id'=>14, 'sequence_no'=>17, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>5],
             ['workflow_id'=>14, 'sequence_no'=>18, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>6],
-            ['workflow_id'=>15, 'sequence_no'=>19, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>14, 'sequence_no'=>19, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>14, 'sequence_no'=>20, 'office_reference'=>'ගිණුම් අංශය', 'role_id'=>10],
 
             //15
             ['workflow_id'=>15, 'sequence_no'=>1, 'office_reference'=>'Applicant', 'role_id'=>1],
@@ -276,7 +290,8 @@ class Workflow_step_seeder extends Seeder
             ['workflow_id'=>15, 'sequence_no'=>16, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>4],
             ['workflow_id'=>15, 'sequence_no'=>17, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>5],
             ['workflow_id'=>15, 'sequence_no'=>18, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>6],
-            ['workflow_id'=>16, 'sequence_no'=>19, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>15, 'sequence_no'=>19, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>15, 'sequence_no'=>20, 'office_reference'=>'ගිණුම් අංශය', 'role_id'=>10],
 
             //16
             ['workflow_id'=>16, 'sequence_no'=>1, 'office_reference'=>'Applicant', 'role_id'=>1],
@@ -291,7 +306,8 @@ class Workflow_step_seeder extends Seeder
             ['workflow_id'=>16, 'sequence_no'=>10, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>4],
             ['workflow_id'=>16, 'sequence_no'=>11, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>5],
             ['workflow_id'=>16, 'sequence_no'=>12, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>6],
-            ['workflow_id'=>17, 'sequence_no'=>13, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>16, 'sequence_no'=>13, 'office_reference'=>'පිරිස් හා පුහුණු අංශය', 'role_id'=>7],
+            ['workflow_id'=>16, 'sequence_no'=>14, 'office_reference'=>'ගිණුම් අංශය', 'role_id'=>10],
         ]);
     }
 }
