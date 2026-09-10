@@ -243,8 +243,17 @@ class OfficerAssignmentController extends Controller{
             abort(403,'Only Chief Secretary Admin can assign Ministry officers.');
         }
 
-        //CHIEF SECRETARY ADMIN - Its admin is assigned by the admin of Chief Secretary Personal & Training.
+        //CHIEF SECRETARY ADMIN - Its roles are assigned by the admin of Chief Secretary Personal & Training.
         if ($office->type === 'Chief Secretary Admin') {
+            if ($this->isPersonalTrainingAdmin($currentUser)) {
+                return;
+            }
+
+            abort(403,'Only Chief Secretary Personal and Training Admin can assign this office.');
+        }
+
+        //CHIEF SECRETARY ACCOUNTS - Its roles are assigned by the admin of Chief Secretary Personal & Training.
+        if ($office->type === 'Chief Secretary Accounts') {
             if ($this->isPersonalTrainingAdmin($currentUser)) {
                 return;
             }
@@ -291,7 +300,7 @@ class OfficerAssignmentController extends Controller{
         }
 
 
-        //2. CHIEF SECRETARY PERSONAL & TRAINING ADMIN -  Can manage Chief Secretary Admin and ministries
+        //2. CHIEF SECRETARY PERSONAL & TRAINING ADMIN -  Can manage Chief Secretary Admin, Chief Secretary Accounts and ministries
         $specialOfficeIds = collect();
         $ministryIds = collect();
 
@@ -306,6 +315,17 @@ class OfficerAssignmentController extends Controller{
             $specialOfficeIds = Office::where('type', 'Chief Secretary Admin')
                 ->where('status', 'Active')
                 ->pluck('id');
+            
+            // Can manage Chief Secretary Accounts office
+            $accountsOfficeIds = Office::where('type', 'Chief Secretary Accounts')
+                ->where('status', 'Active')
+                ->pluck('id');
+
+            // Combine both
+            $specialOfficeIds = $specialOfficeIds
+                ->merge($accountsOfficeIds)
+                ->unique()
+                ->values();
 
             // Can manage all Ministries
             $ministryIds = Office::where('type', 'Ministry')

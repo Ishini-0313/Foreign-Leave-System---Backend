@@ -15,6 +15,14 @@ use Illuminate\Http\UploadedFile;
 
 
 class WorkflowService{
+    private function requiresAccountsApproval(Application $application): bool{
+        return in_array($application->leave_category, [
+            'leave_with_additional_offer',
+            'leave_with_warm_cloths_and_additional_offer',
+            'warm_cloths_and_additional_offer_only',
+        ], true);
+    }
+
     public function assignFirstStep(Application $application){
         $firstStep = Workflow_steps::where('workflow_id', $application->workflow_id)->where('office_reference', '!=', 'Applicant')->orderBy('sequence_no')->first();
 
@@ -184,7 +192,78 @@ class WorkflowService{
             );
         }
 
-        // Check whether this really is the final step
+        // Create approval history for current step
+        Application_workflow_histories::create([
+            'application_id' => $application->id,
+            'workflow_step_id' => $application->current_step_id,
+            'user_id' => $user->id,
+            'action' => $action,
+            'remarks' => $remarks ?? '-',
+            'signature_path' => $signaturePath
+        ]);
+
+        //Check whether this is Chief Secretary
+        $isChiefSecretary =
+            $currentStep->role?->role_name === 'Chief Secretary';
+
+        //Chief Secretary approved
+        if($isChiefSecretary && requiresAccountsApproval()){
+
+            //Find Accounts Officer workflow step
+            $accountsStep = Workflow_steps::where('workflow_id', $application->workflow_id)
+                ->where('office_reference', 'ගිණුම් අංශය')
+                ->whereHas('role', function ($query) {
+                    $query->where('role_name', 'Accountant');
+                })
+                ->orderBy('sequence_no')
+                ->first();
+
+            if (!$accountsStep) {
+                throw new \Exception(
+                    'Accounts Officer workflow step not found.'
+                );
+            }
+
+            //Find Accountant user
+            $accountsOffice = Office::where(
+                'name',
+                'ගිණුම් අංශය'
+            )->first();
+
+
+            if (!$accountsOffice) {
+                throw new \Exception(
+                    'ගිණුම් අංශය office not found.'
+                );
+            }
+
+            $accountsOfficer = User::where('office_id',$accountsOffice->id)
+                ->whereHas('designation', function ($query) {
+                    $query->where(
+                        'name',
+                        'ගණකාධිකාරී'
+                    );
+                })
+                ->first();
+
+            if (!$accountsOfficer) {
+                throw new \Exception(
+                    'ගණකාධිකාරී not assigned in ගිණුම් අංශය.'
+                );
+            }
+
+            //Forward application to Accounts Officer
+            $application->update([
+                'status' => 'Pending',
+                'current_step_id' => $accountsStep->id,
+                'current_assigned_user_id' => $accountsOfficer->id,
+                'current_assigned_office_id' => $accountsOffice->id,
+            ]);
+
+            return;
+        }
+
+        //normal final approval
         $nextStep = Workflow_steps::where(
             'workflow_id',
             $application->workflow_id
@@ -202,22 +281,15 @@ class WorkflowService{
                 'This application is not at the final approval step.'
             );
         }
+        
+        // if($action == "Approved with salary"){
+        //     $approved_with_salary = 1;
+        // }else{
+        //     $approved_with_salary = 0;
+        // }
 
-        if($action == "Approved with salary"){
-            $approved_with_salary = 1;
-        }else{
-            $approved_with_salary = 0;
-        }
-
-        // Create approval history
-        Application_workflow_histories::create([
-            'application_id' => $application->id,
-            'workflow_step_id' => $application->current_step_id,
-            'user_id' => $user->id,
-            'action' => $action,
-            'remarks' => $remarks ?? '-',
-            'signature_path' => $signaturePath
-        ]);
+        $approvedWithSalary =
+            $action === 'Approved with salary' ? 1 : 0;
 
         // Mark application approved
         $application->update([

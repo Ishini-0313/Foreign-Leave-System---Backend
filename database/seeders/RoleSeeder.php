@@ -58,5 +58,10 @@ class RoleSeeder extends Seeder
             'role_name' => 'System Admin'
         ]);
 
+        // 10
+        Role::create([
+            'role_name' => 'Accountant'
+        ]);
+
     }
 }
