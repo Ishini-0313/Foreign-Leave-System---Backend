@@ -5,6 +5,17 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\MinistrySeeder;
+use Database\Seeders\DeptSeeder;
+use Database\Seeders\DistrictOfficeSeeder;
+use Database\Seeders\OfficeSeeder;
+use Database\Seeders\GradeSeeder;
+use Database\Seeders\ServiceSeeder;
+use Database\Seeders\RoleSeeder;
+use Database\Seeders\Workflow_templateSeeder;
+use Database\Seeders\SubOfficeSeeder;
+use Database\Seeders\Workflow_step_seeder;
+use Database\Seeders\DesignationSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,9 +28,23 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
+
+        $this->call([
+            MinistrySeeder::class,
+            DeptSeeder::class,
+            DistrictOfficeSeeder::class,
+            OfficeSeeder::class,
+            GradeSeeder::class,
+            ServiceSeeder::class,
+            RoleSeeder::class,
+            SubOfficeSeeder::class,
+            Workflow_templateSeeder::class,
+            Workflow_step_seeder::class,
+            DesignationSeeder::class
         ]);
     }
 }
