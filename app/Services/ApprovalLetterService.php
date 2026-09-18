@@ -10,7 +10,7 @@ use Symfony\Component\Process\Process;
 
 class ApprovalLetterService
 {
-    public function generate(Application $application): ApprovalLetter{
+    public function generate(Application $application, ?string $signatureText = null): ApprovalLetter{
         // refresh application relationship
         $application->load([
             'applicant',
@@ -21,19 +21,19 @@ class ApprovalLetterService
         // select template according to the leave category
         $templates = [
             'short_trip' =>
-                'templates/approval_letters/short_trip.docx',
+                'templates/approval_letters/personnal_approval_letter.docx',
 
             'study' =>
-                'templates/approval_letters/study.docx',
+                'templates/approval_letters/personnal_approval_letter.docx',
 
             'employment' =>
-                'templates/approval_letters/employment.docx',
+                'templates/approval_letters/personnal_approval_letter.docx',
 
             'study_and_employment' =>
-                'templates/approval_letters/study_and_employment.docx',
+                'templates/approval_letters/personnal_approval_letter.docx',
 
             'spouse' =>
-                'templates/approval_letters/spouse.docx',
+                'templates/approval_letters/personnal_approval_letter.docx',
 
             'leave_without_offers' =>
                 'templates/approval_letters/leave_without_offers.docx',
@@ -115,12 +115,53 @@ class ApprovalLetterService
             $this->formatDate($application->leave_end_date)
         );
 
-        
+        $templateProcessor->setValue(
+            'leave_to',
+            $this->formatDate($application->leave_end_date)
+        );
+
+        $category_name = "";
+
+        // leave category
+        if($category === 'short_trip'){
+            $category_name = "පෞද්ගලික සංචාරයක් සදහා";
+        }
+        else if($category === 'study'){
+            $category_name = "අධ්‍යයනය සදහා";
+        }
+        else if($category === 'employment'){
+            $category_name = "රැකියාව සදහා";
+        }
+        else if($category === 'study_and_employment'){
+            $category_name = "අධ්‍යයන හා රැකියාව සදහා";
+        }
+        else if($category === 'spouse'){
+            $category_name = "කලත්‍රය සමග";
+        }
+        else{
+            $category_name = "";
+        }
+
+
+        $templateProcessor->setValue(
+            'category',
+            $category_name
+        );
+
+        $templateProcessor->setValue(
+            'ministry',
+            $application->ministry->name ?? ""
+        );
+
+        $templateProcessor->setValue(
+            'signature',
+            $signatureText ?? ''
+        );
 
         $fileName ='Approval_Letter_' .$application->application_no .'.docx';
 
         $directory = storage_path(
-            'app/generated/approval_letters'
+            'app/public/generated/approval_letters'
         );
 
         if (!is_dir($directory)) {
