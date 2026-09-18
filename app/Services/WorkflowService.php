@@ -207,7 +207,7 @@ class WorkflowService{
             $currentStep->role?->role_name === 'Chief Secretary';
 
         //Chief Secretary approved
-        if($isChiefSecretary && requiresAccountsApproval()){
+        if($isChiefSecretary && $this->requiresAccountsApproval($application)){
 
             //Find Accounts Officer workflow step
             $accountsStep = Workflow_steps::where('workflow_id', $application->workflow_id)
@@ -254,7 +254,7 @@ class WorkflowService{
 
             //Forward application to Accounts Officer
             $application->update([
-                'status' => 'Pending',
+                'status' => 'Approved',
                 'current_step_id' => $accountsStep->id,
                 'current_assigned_user_id' => $accountsOfficer->id,
                 'current_assigned_office_id' => $accountsOffice->id,
@@ -276,16 +276,10 @@ class WorkflowService{
         ->orderBy('sequence_no')
         ->first();
 
-        if ($nextStep) {
-            throw new \Exception(
-                'This application is not at the final approval step.'
-            );
-        }
-        
-        // if($action == "Approved with salary"){
-        //     $approved_with_salary = 1;
-        // }else{
-        //     $approved_with_salary = 0;
+        // if ($nextStep) {
+        //     throw new \Exception(
+        //         'This application is not at the final approval step.'
+        //     );
         // }
 
         $approvedWithSalary =
@@ -294,7 +288,7 @@ class WorkflowService{
         // Mark application approved
         $application->update([
             'status' => 'Approved',
-            'approved_with_salary' => $approved_with_salary,
+            'approved_with_salary' => $approvedWithSalary,
             'approved_at' => now(),
             'current_assigned_user_id' => null,
             'current_assigned_office_id' => null,

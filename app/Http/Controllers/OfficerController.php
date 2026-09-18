@@ -7,8 +7,10 @@ use App\Models\Application;
 use App\Services\WorkflowService;
 use App\Models\Office;
 use App\Services\ApprovalLetterService;
+use App\Services\DigitalSignatureService;
 use App\Services\CompletedApplicationService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class OfficerController extends Controller
 {
@@ -18,11 +20,11 @@ class OfficerController extends Controller
         return Application::with(['applicant','applicant.office'])->where('current_assigned_user_id', auth()->id())->where('status', 'Pending')->get();
     }
 
-    public function approve(Request $request, Application $application, WorkflowService $workflowService, ApprovalLetterService $approvalLetterService, CompletedApplicationService $completedApplicationService){
+    public function approve(Request $request, Application $application, WorkflowService $workflowService, ApprovalLetterService $approvalLetterService, CompletedApplicationService $completedApplicationService, DigitalSignatureService $digitalSignatureService){
         $request->validate([
             'remarks' => 'nullable|string',
             'approval' => 'nullable|in:approved_with_salary,approved_without_salary,not_approved',
-            'signature' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+            //'signature' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
         // Make sure this application belongs to the logged-in responsible officer
@@ -67,35 +69,64 @@ class OfficerController extends Controller
             }
 
 
-            $workflowService->approve($application,auth()->user(),$request->remarks,$signaturePath,$action);
+            $workflowService->approve($application,auth()->user(),$request->remarks,null,$action);
 
+            $freshApplication = $application->fresh();
+
+            
+            //Create visible signature text for ${signature}
+
+            $signatureText =
+                $digitalSignatureService->getVisibleSignatureText(
+                    auth()->user(),
+                    $freshApplication
+                );
+
+            //Generate approval letter with ${signature} replaced
             $approvalLetter = $approvalLetterService->generate(
-                $application->fresh()
+                $freshApplication, $signatureText
+            );
+
+            //Cryptographically sign the generated PDF
+            $approvalLetter = $digitalSignatureService->signApprovalLetter(
+                $approvalLetter,
+                auth()->user()
             );
 
             //Generate completed application forms
-            $completedForm = $completedApplicationService->generate_form_16($application);
-            $completedForm = $completedApplicationService->generate_form_126($application);
+            $completedForm_16 = $completedApplicationService->generate_form_16($application->fresh());
+            $completedForm_126 = $completedApplicationService->generate_form_126($application->fresh());
 
             DB::commit();
 
             return response()->json([
-                'message' => 'Application approved successfully.',
+                'message' => 'Application approved and digitally signed successfully.',
                 'approval_letter' => [
                     'id' => $approvalLetter->id,
                     'file_name' => $approvalLetter->file_name,
+                    'pdf_hash' => $approvalLetter->pdf_hash,
+                    'signed_by' => $approvalLetter->signed_by,
+                    'digitally_signed_at' =>
+                        $approvalLetter->digitally_signed_at,
+                    'signature_algorithm' =>
+                        $approvalLetter->signature_algorithm,
                 ],
             ]);
-        }catch(\Exception $e){
-            \Log::error(
-            'Approval letter generation failed',
+        }catch(\Throwable $e){
+            DB::rollBack();
+
+            Log::error(
+                'Digital approval letter signing failed',
                 [
                     'application_id' => $application->id,
-                    'error' => $e->getMessage()
+                    'user_id' => auth()->id(),
+                    'error' => $e->getMessage(),
                 ]
             );
+
             return response()->json([
-                'error' => $e->getMessage()
+                'message' => 'Unable to approve and digitally sign the application.',
+                'error' => $e->getMessage(),
             ], 400);
         }
     }
@@ -264,6 +295,15 @@ class OfficerController extends Controller
 
     public function allSubApplications(Request $request){
         $user = $request->user();
+
+        // Personnel & Training Division can see ALL applications
+        if($user->office && trim($user->office->name) === 'පිරිස් හා පුහුණු අංශය' || 'පාලන අංශය'){
+            return Application::with([
+                'applicant.office',
+                'workflowHistories.workflowStep',
+                'workflowHistories.user.office'
+            ])->orderBy('created_at', 'desc')->get();
+        }
 
         // Logged-in user's office
         $office = $user->office;
