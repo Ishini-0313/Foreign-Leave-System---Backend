@@ -13,6 +13,17 @@ class ApprovalLetter extends Model
         'file_path',
         'pdf_path',
         'template_name',
+
+        'pdf_hash',
+        'digital_signature',
+        'signature_algorithm',
+        'signed_by',
+        'digitally_signed_at',
+        'public_key_path',
+    ];
+
+    protected $casts = [
+        'digitally_signed_at' => 'datetime',
     ];
 
     public function application(){
