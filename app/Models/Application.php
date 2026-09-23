@@ -86,7 +86,17 @@ class Application extends Model
         'return_time',
         'provides_other_allowances_that_provide_by_awarding_institution',
         'amount_to_be_paid',
-        'have_received_warm_clothing_allowance_within_five_years'
+        'have_received_warm_clothing_allowance_within_five_years',
+
+        'no_of_days',
+        'total_additional_offer',
+
+        'is_country_in_the_northern_hemisphere',
+        'north_latitude',
+        'is_country_in_the_southern_hemisphere',
+        'south_latitude',
+        'situated_more_than_5000_feet_above_sea_level',
+        'height',
     ];
 
     protected $appends = ['is_editable'];
