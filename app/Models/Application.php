@@ -14,6 +14,8 @@ use App\Models\Workflow_steps;
 use App\Models\Application_amendments;
 use App\Models\ApprovalLetter;
 use App\Models\ApplicationOfficeDocument;
+use App\Models\WarmClothOffer;
+use App\Models\AdditionalOffer;
 
 class Application extends Model
 {
@@ -88,15 +90,15 @@ class Application extends Model
         'amount_to_be_paid',
         'have_received_warm_clothing_allowance_within_five_years',
 
-        'no_of_days',
-        'total_additional_offer',
+        // 'no_of_days',
+        // 'total_additional_offer',
 
-        'is_country_in_the_northern_hemisphere',
-        'north_latitude',
-        'is_country_in_the_southern_hemisphere',
-        'south_latitude',
-        'situated_more_than_5000_feet_above_sea_level',
-        'height',
+        // 'is_country_in_the_northern_hemisphere',
+        // 'north_latitude',
+        // 'is_country_in_the_southern_hemisphere',
+        // 'south_latitude',
+        // 'situated_more_than_5000_feet_above_sea_level',
+        // 'height',
     ];
 
     protected $appends = ['is_editable'];
@@ -151,6 +153,14 @@ class Application extends Model
 
     public function approvalLetter(){
         return $this->hasOne(ApprovalLetter::class);
+    }
+
+    public function warmClothOffer(){
+        return $this->hasOne(WarmClothOffer::class);
+    }
+
+    public function additionalOffer(){
+        return $this->hasOne(AdditionalOffer::class);
     }
 }
 

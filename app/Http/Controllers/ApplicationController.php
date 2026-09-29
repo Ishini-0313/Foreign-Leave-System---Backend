@@ -465,7 +465,9 @@ class ApplicationController extends Controller
             'institute',
             'availableLeaveInfo',
             'current_step.role',
-            'amendments'
+            'amendments',
+            'warmClothOffer',
+            'additionalOffer'
         ])->findOrFail($id);
 
         $currentStep = $application->current_step;
@@ -477,6 +479,7 @@ class ApplicationController extends Controller
 
         return response()->json([
             'application' => $application,
+            'warm_cloth_offer' => $application->warmClothOffer,
             'is_final_step' => $isFinalStep
         ]);
     }
