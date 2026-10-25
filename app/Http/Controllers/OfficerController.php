@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Application;
+use App\Models\Offer;
 use App\Services\WorkflowService;
 use App\Models\Office;
 use App\Services\ApprovalLetterService;
@@ -194,7 +195,7 @@ class OfficerController extends Controller
             ]);
         }catch(\Exception $e){
             DB::rollBack();
-            \Log::error('Application returned failed', [
+            \Log::error('Application forward failed', [
                 'application_id' => $application->id,
                 'error' => $e->getMessage()
             ]);
@@ -327,4 +328,6 @@ class OfficerController extends Controller
 
         return response()->json($applications);
     }
+
+    
 }

@@ -42,6 +42,7 @@ class Application extends Model
         'nic',
         
         'ministry_id',
+        'department_id',
         'institute_id',
 
         'arrangement_made_to_cover_duty',
@@ -139,8 +140,20 @@ class Application extends Model
         return $this->belongsTo(Office::class, 'ministry_id');
     }
 
+    // public function institute(){
+    //     return $this->belongsTo(Office::class, 'institute_id');
+    // }
+
     public function institute(){
-        return $this->belongsTo(Office::class, 'institute_id');
+        if ($this->institute_id !== null) {
+            return $this->belongsTo(Office::class, 'institute_id');
+        }
+        elseif ($this->department_id !== null) {
+            return $this->belongsTo(Office::class, 'department_id');
+        }
+        else{
+            return $this->belongsTo(Office::class, 'ministry_id');
+        }
     }
 
     public function availableLeaveInfo(){

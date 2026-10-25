@@ -22,12 +22,13 @@ use App\Http\Controllers\CompletedApplicationController;
 use App\Http\Controllers\AnnualReportController;
 use App\Http\Controllers\OfficeDocumentsController;
 use App\Http\Controllers\DigitalSignatureController;
+use App\Http\Controllers\OfferController;
 
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
 
 // get all institutes
-Route::get('/office', [OfficeController::class, 'index']);
+Route::get('/offices', [OfficeController::class, 'index']);
 
 // get all services
 Route::get('/services', [ServiceController::class, 'index']);
@@ -54,6 +55,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/application/{applicationId}/resubmit', [ApplicationController::class, 'restore']);
 });
 
+// sumbit offer
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/offer', [OfferController::class, 'store_offer_req']);
+});
+
+// re-sumbit offer
+Route::middleware('auth:sanctum')->group(function () {
+    Route::put('/offer/{applicationId}/resubmit', [OfferController::class, 'restore_offer_req']);
+});
+
 // sumbit amendment
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/amendment', [AmendmentsController::class, 'store']);
@@ -67,8 +78,18 @@ Route::get(
 );
 
 Route::get(
-    '/applications/{id}',
+    '/applications/{application_no}',
     [ApplicationController::class, 'show']
+);
+
+Route::get(
+    '/offers/{application_no}',
+    [OfferController::class, 'show']
+);
+
+Route::get(
+    '/offers/{id}',
+    [OfferController::class, 'show']
 );
 
 Route::get(
@@ -79,6 +100,11 @@ Route::get(
 Route::middleware('auth:sanctum')->get(
     '/my-application',
     [ApplicationController::class, 'myApplication']
+);
+
+Route::middleware('auth:sanctum')->get(
+    '/my-offer-application',
+    [OfferController::class, 'myApplication']
 );
 
 //get amendment related to application id
@@ -99,10 +125,16 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/officer/all-sub-applications', [OfficerController::class, 'allSubApplications']);
 });
 
-Route::get('/applications/{id}/tracking', [TrackingController::class, 'index']);
-Route::get('/amendments/{id}/tracking', [AmendmentTrackingController::class, 'index']);
+Route::middleware('auth:sanctum')->group(function(){
+    Route::get('/applications/{application_no}/tracking', [TrackingController::class, 'applicationTrackig']);
+});
 
-Route::get('/applications/{id}/documents', [ApplicationController::class, 'documents']);
+Route::get('/offers/{application_no}/tracking', [TrackingController::class, 'offerTrackig']);
+Route::get('/amendments/{application_no}/tracking', [AmendmentTrackingController::class, 'index']);
+
+Route::get('/applications/{application_no}/documents', [ApplicationController::class, 'documents']);
+Route::get('/offers/{application_no}/documents', [OfferController::class, 'documents']);
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post(
@@ -182,31 +214,31 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get(
-        '/applications/{application}/approval-letter',
+        '/applications/{application_no}/approval-letter',
         [ApprovalLetterController::class, 'viewApprovalLetter']
     );
 
     Route::get(
-        '/applications/{application}/approval-letter/download',
+        '/applications/{application_no}/approval-letter/download',
         [ApprovalLetterController::class, 'downloadApprovalLetter']
     );
 });
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get(
-        '/applications/{application}/completed-form-16',
+        '/applications/{application_no}/completed-form-16',
         [CompletedApplicationController::class, 'view16']
     );
     Route::get(
-        '/applications/{application}/completed-form-16/download',
+        '/applications/{application_no}/completed-form-16/download',
         [CompletedApplicationController::class, 'download16']
     );
     Route::get(
-        '/applications/{application}/completed-form-126',
+        '/applications/{application_no}/completed-form-126',
         [CompletedApplicationController::class, 'view126']
     );
     Route::get(
-        '/applications/{application}/completed-form-126/download',
+        '/applications/{application_no}/completed-form-126/download',
         [CompletedApplicationController::class, 'download126']
     );
 });
@@ -231,4 +263,14 @@ Route::get(
     '/approval-letter/{approvalLetter}/verify',
     [DigitalSignatureController::class, 'verify']
 );
+
+Route::post(
+    '/application/{id}/additional-offer',
+    [OfferController::class,'save_additonal']
+)->middleware('auth:sanctum');
+
+Route::post(
+    '/application/{id}/warmcloth-offer',
+    [OfferController::class,'save_warmcloth']
+)->middleware('auth:sanctum');
 

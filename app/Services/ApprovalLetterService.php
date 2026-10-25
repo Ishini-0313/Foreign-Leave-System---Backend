@@ -46,6 +46,12 @@ class ApprovalLetterService
 
             'leave_with_warm_cloths_and_additional_offer' =>
                 'templates/approval_letters/leave_with_warm_cloths_and_additional_offer.docx',
+
+            'warm_cloths_offer' =>
+                'templates/approval_letters/warm_cloths_offer.docx',
+
+            'warm_cloths_and_additional_offer_only' =>
+                'templates/approval_letters/warm_cloths_and_additional_offer.docx',
         ];
 
         $category = $application->leave_category;
@@ -73,6 +79,16 @@ class ApprovalLetterService
         $templateProcessor->setValue(
             'date',
             now()->format('Y.m.d')
+        );
+
+        $templateProcessor->setValue(
+            'application_no',
+            $application->application_no ?? ""
+        );
+
+        $templateProcessor->setValue(
+            'submitted_date',
+            $application->created_at ?? ""
         );
 
         $templateProcessor->setValue(
@@ -201,8 +217,7 @@ class ApprovalLetterService
                 'application_id' => $application->id,
                 'file_name' => $fileName,
                 'file_path' => 'generated/approval_letters/' . $fileName,
-                'pdf_path' => 'generated/approval_letters/' .
-                    pathinfo($fileName, PATHINFO_FILENAME) . '.pdf',
+                'pdf_path' => 'generated/approval_letters/' . $pdfFileName,
                 'template_name' => $category,
             ]
         );

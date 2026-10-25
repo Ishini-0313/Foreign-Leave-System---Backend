@@ -109,6 +109,21 @@ class WorkflowService{
                     "Please upload the required documents before forwarding this application."
                 );
             }
+
+            if($application->leave_category == "leave_with_warm_cloths_and_additional_offer" || $application->leave_category == "warm_cloths_and_additional_offer_only"){
+                if(!$application->warmClothOffer()->exists()){
+                    throw new \Exception("Please complete the required fields of warm cloth offer form before forwarding this application.");
+                }
+                if(!$application->additionalOffer()->exists()){
+                    throw new \Exception("Please complete the required fields of additional offer form before forwarding this application.");
+                }
+            }
+
+            if($application->leave_category == "leave_with_additional_offer"){
+                if(!$application->additionalOffer()->exists()){
+                    throw new \Exception("Please complete the required fields of additional offer form before forwarding this application.");
+                }
+            }
         }
 
         Application_workflow_histories::create([

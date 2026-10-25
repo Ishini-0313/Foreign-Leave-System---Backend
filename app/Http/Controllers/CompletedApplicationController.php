@@ -8,7 +8,8 @@ use App\Models\Application;
 
 class CompletedApplicationController extends Controller
 {
-    public function view16(Application $application){
+    public function view16($application_no){
+        $application = Application::where('application_no', $application_no)->first();
         $form = CompletedApplicationForm::where('application_id',$application->id)->where('form_type','form_16')->first();
 
         if (!$form) {
@@ -40,7 +41,8 @@ class CompletedApplicationController extends Controller
         );
     }
 
-    public function download16(Application $application){
+    public function download16($application_no){
+        $application = Application::where('application_no', $application_no)->first();
         $form = CompletedApplicationForm::where(
             'application_id',
             $application->id
@@ -77,7 +79,8 @@ class CompletedApplicationController extends Controller
         );
     }
 
-    public function view126(Application $application){
+    public function view126($application_no){
+        $application = Application::where('application_no', $application_no)->first();
         $form = CompletedApplicationForm::where('application_id',$application->id)->where('form_type','form_126')->first();
 
         if (!$form) {
@@ -109,7 +112,8 @@ class CompletedApplicationController extends Controller
         );
     }
 
-    public function download126(Application $application){
+    public function download126($application_no){
+        $application = Application::where('application_no', $application_no)->first();
         $form = CompletedApplicationForm::where('application_id',$application->id)->where('form_type','form_126')->first();
 
         if (!$form) {

@@ -57,6 +57,7 @@ class ApplicationController extends Controller
                 "nic" => $request->nic,
 
                 "ministry_id" => $request->ministry_id,
+                "department_id" => $request->department_id,
                 "institute_id" => $request->institute_id,
 
                 "arrangement_made_to_cover_duty" => $request->arrangement_made_to_cover_duty,
@@ -144,33 +145,6 @@ class ApplicationController extends Controller
                     'country' => $travel['country'],
                 ]);
             }
-
-            // Save Signature
-            // if ($request->signature) {
-
-            //     $signature = $request->signature;
-
-            //     $signature = str_replace(
-            //         'data:image/png;base64,',
-            //         '',
-            //         $signature
-            //     );
-
-            //     $signature = str_replace(
-            //         ' ',
-            //         '+',
-            //         $signature
-            //     );
-
-            //     $signaturePath = 'signatures/'.$application->id.'.png';
-
-            //     Storage::disk('public')->put(
-            //         $signaturePath,base64_decode($signature)
-            //     );
-
-            //     $application->signature_path = $signaturePath;
-            //     $application->save();
-            // }
 
             if ($request->hasFile('signature')) {
                 $file = $request->file('signature');
@@ -455,7 +429,7 @@ class ApplicationController extends Controller
         );
     }
 
-    public function show($id){
+    public function show($application_no){
         $application = Application::with([
             'goslFunds',
             'previousTravels',
@@ -468,7 +442,7 @@ class ApplicationController extends Controller
             'amendments',
             'warmClothOffer',
             'additionalOffer'
-        ])->findOrFail($id);
+        ])->where('application_no', $application_no)->firstOrFail();
 
         $currentStep = $application->current_step;
         $isFinalStep = false;
@@ -495,26 +469,26 @@ class ApplicationController extends Controller
         return response()->json($application);
     }
 
-    public function documents($id){
+    public function documents($application_no){
         $application = Application::with([
-        'documents',
-        'officeDocuments'
-    ])->findOrFail($id);
+            'documents',
+            'officeDocuments'
+        ])->where('application_no', $application_no)->firstOrFail();
 
-    $documents = $application->documents
-        ->map(function ($document) {
-            $document->uploaded_by_type = 'applicant';
-            return $document;
-        })
-        ->concat(
-            $application->officeDocuments->map(function ($document) {
-                $document->uploaded_by_type = 'subject_officer';
+        $documents = $application->documents
+            ->map(function ($document) {
+                $document->uploaded_by_type = 'applicant';
                 return $document;
             })
-        )
-        ->values();
+            ->concat(
+                $application->officeDocuments->map(function ($document) {
+                    $document->uploaded_by_type = 'subject_officer';
+                    return $document;
+                })
+            )
+            ->values();
 
-    return response()->json($documents);
+        return response()->json($documents);
     }
 
     

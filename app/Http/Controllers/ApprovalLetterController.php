@@ -6,10 +6,20 @@ use Illuminate\Http\Request;
 use App\Models\ApprovalLetter;
 use App\Models\Application;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
+
 
 class ApprovalLetterController extends Controller{
-    public function viewApprovalLetter($applicationId) {
-        $approvalLetter =ApprovalLetter::where('application_id', $applicationId)->first();
+    public function viewApprovalLetter($application_no) {
+        $application = Application::where('application_no', $application_no)->first();
+        
+        if(!$application){
+            return response()->json([
+                'message' => 'Application not found.'
+            ]);
+        }
+
+        $approvalLetter =ApprovalLetter::where('application_id', $application->id)->first();
 
         if (!$approvalLetter) {
             return response()->json([
@@ -17,7 +27,9 @@ class ApprovalLetterController extends Controller{
             ], 404);
         }
 
-        $path = storage_path('app/' . $approvalLetter->pdf_path);
+       // $path = storage_path('app/' . $approvalLetter->pdf_path);
+
+        $path = Storage::disk('public')->path($approvalLetter->pdf_path);
 
         if (!file_exists($path)) {
             return response()->json([
@@ -38,7 +50,15 @@ class ApprovalLetterController extends Controller{
         );
     }
 
-    public function downloadApprovalLetter(Application $application){
+    public function downloadApprovalLetter($application_no){
+        $application = Application::where('application_no', $application_no)->first();
+
+        if(!$application){
+            return response()->json([
+                'message' => 'Application not found.'
+            ]);
+        }
+
         $approvalLetter = ApprovalLetter::where('application_id',$application->id)->first();
 
         if (!$approvalLetter) {
@@ -47,9 +67,12 @@ class ApprovalLetterController extends Controller{
             ], 404);
         }
 
-        $path = storage_path(
-            'app/' . $approvalLetter->pdf_path
-        );
+        // $path = storage_path(
+        //     'app/' . $approvalLetter->pdf_path
+        // );
+
+        $path = Storage::disk('public')->path($approvalLetter->pdf_path);
+
 
         if (!file_exists($path)) {
             return response()->json([

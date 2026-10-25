@@ -412,7 +412,7 @@ class CompletedApplicationService{
 
         //Output directory
         $directory = storage_path(
-            'app/generated/application_forms'
+            'app/public/generated/application_forms'
         );
 
         if (!is_dir($directory)) {
@@ -574,7 +574,7 @@ class CompletedApplicationService{
 
         //Output directory
         $directory = storage_path(
-            'app/generated/application_forms'
+            'app/public/generated/application_forms'
         );
 
         if (!is_dir($directory)) {

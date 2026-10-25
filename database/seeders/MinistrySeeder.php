@@ -54,37 +54,12 @@ class MinistrySeeder extends Seeder
         ]);
 
         // 6
-        // Office::create([
-        //     'name' => 'දකුණු පළාත් පළාත් සමූපකාර සේවක කොමිෂන් සභාව',
-        //     'type' => 'Department',
-        //     'parent_office_id' => 11,
-        //     'workflow_template_id' => 6
-        // ]);
-
-        // 7
-        // Office::create([
-        //     'name' => 'දකුණු පළාත් පළාත් මෝටර් රථ ප්‍රවාහන දෙපාර්තමේන්තුව',
-        //     'type' => 'Department',
-        //     'parent_office_id' => 3,
-        //     'workflow_template_id' => 1
-        // ]);
-
-        // 8
-        // Office::create([
-        //     'name' => 'දකුණු පළාත් පළාත් ආදායම් දෙපාර්තමේන්තුව',
-        //     'type' => 'Department',
-        //     'parent_office_id' => 3,
-        //     'workflow_template_id' => 1
-        // ]);
-
-        // 6
         Office::create([
             'name' => 'දකුණු පළාත් ප්‍රධාන අමාත්‍යංශය',
             'type' => 'Ministry',
             'parent_office_id' => NULL,
             'workflow_template_id' => 1
         ]);
-
 
         // 7
         Office::create([

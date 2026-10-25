@@ -6,12 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Application;
 use App\Models\UserOfficeRole;
 use App\Models\OfficeAssignment;
+use App\Models\Offer;
 
 class Office extends Model{
     protected $fillable = ['name', 'type', 'parent_office_id', 'status'];
 
     public function application(){
         return $this->hasMany(Application::class);
+    }
+
+    public function offer(){
+        return $this->hasMany(Offer::class);
     }
 
     public function parent(){

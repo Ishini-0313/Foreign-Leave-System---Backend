@@ -15,37 +15,13 @@ class DeptSeeder extends Seeder
     {
         // 11
         Office::create([
-            'name' => 'දකුණු පළාත් පළාත් සමූපකාර සේවක කොමිෂන් සභාව',
-            'type' => 'Department',
-            'parent_office_id' => 8,
-            'workflow_template_id' => 6
-        ]);
-
-        // 12
-        Office::create([
-            'name' => 'දකුණු පළාත් පළාත් මෝටර් රථ ප්‍රවාහන දෙපාර්තමේන්තුව',
-            'type' => 'Department',
-            'parent_office_id' => 3,
-            'workflow_template_id' => 1
-        ]);
-
-        // 13
-        Office::create([
-            'name' => 'දකුණු පළාත් පළාත් ආදායම් දෙපාර්තමේන්තුව',
-            'type' => 'Department',
-            'parent_office_id' => 3,
-            'workflow_template_id' => 1
-        ]);
-
-        // 14
-        Office::create([
             'name' => 'දකුණු පළාත් අභ්‍යන්තර විගණන දෙපාර්තමේන්තුව',
             'type' => 'Department',
             'parent_office_id' => 3,
             'workflow_template_id' => 2
         ]);
 
-        // 15
+        //12
         Office::create([
             'name' => 'දකුණු පළාත් කළමනාකරණ සංවර්ධන හා පුහුණු ආයතනය-වක්වැල්ල',
             'type' => 'Department',
@@ -53,7 +29,23 @@ class DeptSeeder extends Seeder
             'workflow_template_id' => 2
         ]);
 
-        // 16
+        //13
+        Office::create([
+            'name' => 'දකුණු පළාත් පළාත් මෝටර් රථ ප්‍රවාහන දෙපාර්තමේන්තුව',
+            'type' => 'Department',
+            'parent_office_id' => 3,
+            'workflow_template_id' => 1
+        ]);
+
+        //14
+        Office::create([
+            'name' => 'දකුණු පළාත් පළාත් ආදායම් දෙපාර්තමේන්තුව',
+            'type' => 'Department',
+            'parent_office_id' => 3,
+            'workflow_template_id' => 1
+        ]);
+
+        //15
         Office::create([
             'name' => 'දකුණු පළාත් පළාත් පාලන දෙපාර්තමේන්තුව',
             'type' => 'Department',
@@ -61,6 +53,28 @@ class DeptSeeder extends Seeder
             'workflow_template_id' => 3
         ]);
 
+
+        Office::create([
+            'name' => 'දකුණු පළාත් සමූපකාර සේවක කොමිෂන් සභාව',
+            'type' => 'Department',
+            'parent_office_id' => 8,
+            'workflow_template_id' => 6
+        ]);
+
+        // 12
+        
+
+        // 13
+       
+
+        // 14
+        
+
+        // 15
+        
+
+        // 16
+       
         // 17
         Office::create([
             'name' => 'දකුණු පළාත් ආයුර්වේද දෙපාර්තමේන්තුව',
