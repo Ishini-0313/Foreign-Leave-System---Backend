@@ -71,7 +71,7 @@ class TrackingController extends Controller{
         foreach($steps as $step){
             // office name
             if($step->office_reference === 'Institute'){
-                $step->office_name = $application->institute->name;
+                $step->office_name = $application->office->name;
             }
             else{
                 $step->office_name = ucwords(str_replace('_', ' ', $step->office_reference));

@@ -8,8 +8,7 @@ use App\Models\available_leave_info;
 
 class LeaveController extends Controller
 {
-    public function save(Request $request, $id){
-        $application = Application::findOrFail($id);
+    public function save(Request $request, Application $application){
 
         available_leave_info::updateOrCreate(
             [

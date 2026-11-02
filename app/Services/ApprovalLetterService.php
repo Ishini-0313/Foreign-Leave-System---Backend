@@ -7,6 +7,7 @@ use App\Models\ApprovalLetter;
 use App\Models\Application;
 use Carbon\Carbon;
 use Symfony\Component\Process\Process;
+use App\Services\DocxToPdfService;
 
 class ApprovalLetterService
 {
@@ -197,14 +198,19 @@ class ApprovalLetterService
         $templateProcessor->saveAs($docxPath);
 
         //convert docx to pdf
-        $this->convertToPdf($docxPath,$directory);
+        //$this->convertToPdf($docxPath,$directory);
 
-        if (!file_exists($pdfPath)) {
-            throw new \Exception(
-                'PDF generation failed.'
-            );
-        }
+        // if (!file_exists($pdfPath)) {
+        //     throw new \Exception(
+        //         'PDF generation failed.'
+        //     );
+        // }
 
+        app(DocxToPdfService::class)->convert(
+            $docxPath,
+            $pdfPath
+        );
+        
         // return ApprovalLetter::create([
         //     'application_id' => $application->id,
         //     'file_name' => $fileName,
@@ -230,20 +236,20 @@ class ApprovalLetterService
         return \Carbon\Carbon::parse($date)->format('d/m/Y');
     }
 
-    private function convertToPdf(string $docxPath,string $outputDirectory): string {
-        $command = '"C:\Program Files\LibreOffice\program\soffice.exe" '
-        . '--headless '
-        . '--convert-to pdf '
-        . '--outdir "' . $outputDirectory . '" '
-        . '"' . $docxPath . '"';
+    // private function convertToPdf(string $docxPath,string $outputDirectory): string {
+    //     $command = '"C:\Program Files\LibreOffice\program\soffice.exe" '
+    //     . '--headless '
+    //     . '--convert-to pdf '
+    //     . '--outdir "' . $outputDirectory . '" '
+    //     . '"' . $docxPath . '"';
 
-        exec($command, $output, $resultCode);
+    //     exec($command, $output, $resultCode);
 
-        if ($resultCode !== 0) {
-            throw new \Exception('Failed to convert approval letter to PDF.');
-        }
+    //     if ($resultCode !== 0) {
+    //         throw new \Exception('Failed to convert approval letter to PDF.');
+    //     }
 
-        return $outputDirectory . '/' .
-            pathinfo($docxPath, PATHINFO_FILENAME) . '.pdf';
-    }
+    //     return $outputDirectory . '/' .
+    //         pathinfo($docxPath, PATHINFO_FILENAME) . '.pdf';
+    // }
 }

@@ -24,6 +24,13 @@ class ApplicationController extends Controller
         try{
             $user = auth()->user();
             $office = $user->office;
+            // if($request->institute_id){
+            //     $office = $request->institute_id;
+            // }else if($request->department_id){
+            //     $office = $request->department_id;
+            // }else{
+            //     $office = $request->ministry_id;
+            // }
 
             if(!$office){
                 throw new \Exception('User office not assigned');
@@ -436,6 +443,7 @@ class ApplicationController extends Controller
             'documents',
             'officeDocuments',
             'ministry',
+            'department',
             'institute',
             'availableLeaveInfo',
             'current_step.role',

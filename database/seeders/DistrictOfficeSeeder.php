@@ -17,7 +17,7 @@ class DistrictOfficeSeeder extends Seeder
         Office::create([
             'name' => 'දකුණු පළාත් සහකාර පළාත් පාලන දෙපාර්තමේන්තුව - ගාල්ල',
             'type' => 'District Office',
-            'parent_office_id' => 16,
+            'parent_office_id' => 15,
             'workflow_template_id' => 8
         ]);
 
@@ -25,7 +25,7 @@ class DistrictOfficeSeeder extends Seeder
         Office::create([
             'name' => 'දකුණු පළාත් සහකාර පළාත් පාලන දෙපාර්තමේන්තුව - මාතර',
             'type' => 'District Office',
-            'parent_office_id' => 16,
+            'parent_office_id' => 15,
             'workflow_template_id' => 8
         ]);
 
@@ -33,7 +33,7 @@ class DistrictOfficeSeeder extends Seeder
         Office::create([
             'name' => 'දකුණු පළාත් සහකාර පළාත් පාලන දෙපාර්තමේන්තුව - හම්බන්තොට',
             'type' => 'District Office',
-            'parent_office_id' => 16,
+            'parent_office_id' => 15,
             'workflow_template_id' => 8
         ]);
 
@@ -41,7 +41,7 @@ class DistrictOfficeSeeder extends Seeder
         Office::create([
             'name' => 'දිස්ත්‍රික් සෞඛ්‍ය සේවා අධ්‍යක්ෂ කාර්යාලය - ගාල්ල',
             'type' => 'District Office',
-            'parent_office_id' => 18,
+            'parent_office_id' => 17,
             'workflow_template_id' => 8
         ]);
 
@@ -49,7 +49,7 @@ class DistrictOfficeSeeder extends Seeder
         Office::create([
             'name' => 'දිස්ත්‍රික් සෞඛ්‍ය සේවා අධ්‍යක්ෂ කාර්යාලය - මාතර',
             'type' => 'District Office',
-            'parent_office_id' => 18,
+            'parent_office_id' => 17,
             'workflow_template_id' => 8
         ]);
 
@@ -57,16 +57,15 @@ class DistrictOfficeSeeder extends Seeder
         Office::create([
             'name' => 'දිස්ත්‍රික් සෞඛ්‍ය සේවා අධ්‍යක්ෂ කාර්යාලය - හම්බන්තොට‍',
             'type' => 'District Office',
-            'parent_office_id' => 18,
+            'parent_office_id' => 17,
             'workflow_template_id' => 8
         ]);
-
         
         // 36
         Office::create([
             'name' => 'කලාප අධ්‍යාපන කාර්යාලය - අම්බලන්ගොඩ',
             'type' => 'District Office',
-            'parent_office_id' => 19,
+            'parent_office_id' => 18,
             'workflow_template_id' => 9
         ]);
 
@@ -74,7 +73,7 @@ class DistrictOfficeSeeder extends Seeder
         Office::create([
             'name' => 'කලාප අධ්‍යාපන කාර්යාලය -වලස්මුල්ල',
             'type' => 'District Office',
-            'parent_office_id' => 19,
+            'parent_office_id' => 18,
             'workflow_template_id' => 9
         ]);
 
@@ -82,7 +81,7 @@ class DistrictOfficeSeeder extends Seeder
         Office::create([
             'name' => 'කලාප අධ්‍යාපන කාර්යාලය -උඩුගම',
             'type' => 'District Office',
-            'parent_office_id' => 19,
+            'parent_office_id' => 18,
             'workflow_template_id' => 9
         ]);
 
@@ -91,7 +90,7 @@ class DistrictOfficeSeeder extends Seeder
         Office::create([
             'name' => 'කලාප අධ්‍යාපන කාර්යාලය -හම්බන්තොට',
             'type' => 'District Office',
-            'parent_office_id' => 19,
+            'parent_office_id' => 18,
             'workflow_template_id' => 9
         ]);
 
@@ -100,7 +99,7 @@ class DistrictOfficeSeeder extends Seeder
         Office::create([
             'name' => 'කලාප අධ්‍යාපන කාර්යාලය -මුලටියන',
             'type' => 'District Office',
-            'parent_office_id' => 19,
+            'parent_office_id' => 18,
             'workflow_template_id' => 9
         ]);
 
@@ -108,7 +107,7 @@ class DistrictOfficeSeeder extends Seeder
         Office::create([
             'name' => 'කලාප අධ්‍යාපන කාර්යාලය -අකුරැස්ස',
             'type' => 'District Office',
-            'parent_office_id' => 19,
+            'parent_office_id' => 18,
             'workflow_template_id' => 9
         ]);
 
@@ -117,7 +116,7 @@ class DistrictOfficeSeeder extends Seeder
         Office::create([
             'name' => 'කලාප අධ්‍යාපන කාර්යාලය -මාතර',
             'type' => 'District Office',
-            'parent_office_id' => 19,
+            'parent_office_id' => 18,
             'workflow_template_id' => 9
         ]);
 
@@ -125,7 +124,7 @@ class DistrictOfficeSeeder extends Seeder
         Office::create([
             'name' => 'කලාප අධ්‍යාපන කාර්යාලය -ඇල්පිටිය',
             'type' => 'District Office',
-            'parent_office_id' => 19,
+            'parent_office_id' => 18,
             'workflow_template_id' => 9
         ]);
 
@@ -133,7 +132,7 @@ class DistrictOfficeSeeder extends Seeder
         Office::create([
             'name' => 'කලාප අධ්‍යාපන කාර්යාලය -තංගල්ල',
             'type' => 'District Office',
-            'parent_office_id' => 19,
+            'parent_office_id' => 18,
             'workflow_template_id' => 9
         ]);
 
@@ -141,7 +140,7 @@ class DistrictOfficeSeeder extends Seeder
         Office::create([
             'name' => 'කලාප අධ්‍යාපන කාර්යාලය -දෙණියාය, මොරවක',
             'type' => 'District Office',
-            'parent_office_id' => 19,
+            'parent_office_id' => 18,
             'workflow_template_id' => 9
         ]);
 
@@ -149,7 +148,7 @@ class DistrictOfficeSeeder extends Seeder
         Office::create([
             'name' => 'කලාප අධ්‍යාපන කාර්යාලය -ගාල්ල',
             'type' => 'District Office',
-            'parent_office_id' => 19,
+            'parent_office_id' => 18,
             'workflow_template_id' => 9
         ]);
     }

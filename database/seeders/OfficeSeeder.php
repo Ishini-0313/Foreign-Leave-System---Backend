@@ -409,7 +409,7 @@ class OfficeSeeder extends Seeder
         Office::create([
             'name' => 'මූලික රෝහල - බලපිටිය',
             'type' => 'Office',
-            'parent_office_id' => 34,
+            'parent_office_id' => 33,
             'workflow_template_id' => 14
         ]);
 
@@ -417,7 +417,7 @@ class OfficeSeeder extends Seeder
         Office::create([
             'name' => 'මූලික රෝහල - උඩුගම',
             'type' => 'Office',
-            'parent_office_id' => 34,
+            'parent_office_id' => 33,
             'workflow_template_id' => 14
         ]);
 
@@ -425,7 +425,7 @@ class OfficeSeeder extends Seeder
         Office::create([
             'name' => 'මූලික රෝහල - ඇල්පිටිය',
             'type' => 'Office',
-            'parent_office_id' => 34,
+            'parent_office_id' => 33,
             'workflow_template_id' => 14
         ]);
 
@@ -433,7 +433,7 @@ class OfficeSeeder extends Seeder
         Office::create([
             'name' => 'මූලික රෝහල - කඹුරුපිටිය',
             'type' => 'Office',
-            'parent_office_id' => 35,
+            'parent_office_id' => 34,
             'workflow_template_id' => 15
         ]);
 
@@ -441,7 +441,7 @@ class OfficeSeeder extends Seeder
         Office::create([
             'name' => 'මූලික රෝහල - දෙනියාය',
             'type' => 'Office',
-            'parent_office_id' => 35,
+            'parent_office_id' => 34,
             'workflow_template_id' => 15
         ]);
 
@@ -449,7 +449,7 @@ class OfficeSeeder extends Seeder
         Office::create([
             'name' => 'මූලික රෝහල - තංගල්ල',
             'type' => 'Office',
-            'parent_office_id' => 36,
+            'parent_office_id' => 35,
             'workflow_template_id' => 13
         ]);
 
@@ -457,7 +457,7 @@ class OfficeSeeder extends Seeder
         Office::create([
             'name' => 'මූලික රෝහල - වලස්මුල්ල',
             'type' => 'Office',
-            'parent_office_id' => 36,
+            'parent_office_id' => 35,
             'workflow_template_id' => 13
         ]);
 
@@ -465,7 +465,7 @@ class OfficeSeeder extends Seeder
         Office::create([
             'name' => 'මූලික රෝහල - තිස්සමහාරාම',
             'type' => 'Office',
-            'parent_office_id' => 36,
+            'parent_office_id' => 35,
             'workflow_template_id' => 13
         ]);
     }

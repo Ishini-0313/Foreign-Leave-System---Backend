@@ -138,17 +138,17 @@ Route::get('/offers/{application_no}/documents', [OfferController::class, 'docum
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post(
-        '/applications/{application}/forward',
+        '/applications/{application:application_no}/forward',
         [OfficerController::class, 'forward']
     );
 
     Route::post(
-        '/applications/{application}/return',
+        '/applications/{application:application_no}/return',
         [OfficerController::class, 'return']
     );
 
     Route::post(
-        '/applications/{application}/approve',
+        '/applications/{application:application_no}/approve',
         [OfficerController::class, 'approve']
     );
 });
@@ -160,7 +160,7 @@ Route::middleware('auth:sanctum')->group(function(){
 });
 
 Route::post(
-    '/application/{id}/office-form',
+    '/application/{application:application_no}/office-form',
     [LeaveController::class,'save']
 )->middleware('auth:sanctum');
 
@@ -254,7 +254,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post(
-        '/applications/{application}/office-documents',
+        '/applications/{application:application_no}/office-documents',
         [OfficeDocumentsController::class, 'uploadOfficeDocuments']
     );
 });

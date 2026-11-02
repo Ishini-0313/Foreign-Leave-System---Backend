@@ -6,6 +6,7 @@ use App\Models\Application;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Carbon\Carbon;
 use App\Models\CompletedApplicationForm;
+use App\Services\DocxToPdfService;
 
 class CompletedApplicationService{
     public function generate_form_16(Application $application): array{
@@ -434,16 +435,21 @@ class CompletedApplicationService{
         $pdfFileName = $baseName . '.pdf';
         $pdfPath = $directory . '/' . $pdfFileName;
 
-        $this->convertToPdf(
-            $docxPath,
-            $directory
-        );
+        // $this->convertToPdf(
+        //     $docxPath,
+        //     $directory
+        // );
 
-        if (!file_exists($pdfPath)) {
-            throw new \Exception(
-                'PDF conversion failed.'
-            );
-        }
+        // if (!file_exists($pdfPath)) {
+        //     throw new \Exception(
+        //         'PDF conversion failed.'
+        //     );
+        // }
+
+        app(DocxToPdfService::class)->convert(
+            $docxPath,
+            $pdfPath
+        );
 
         CompletedApplicationForm::create([
             'application_id' => $application->id,
@@ -596,16 +602,21 @@ class CompletedApplicationService{
         $pdfFileName = $baseName . '.pdf';
         $pdfPath = $directory . '/' . $pdfFileName;
 
-        $this->convertToPdf(
-            $docxPath,
-            $directory
-        );
+        // $this->convertToPdf(
+        //     $docxPath,
+        //     $directory
+        // );
 
-        if (!file_exists($pdfPath)) {
-            throw new \Exception(
-                'PDF conversion failed.'
-            );
-        }
+        // if (!file_exists($pdfPath)) {
+        //     throw new \Exception(
+        //         'PDF conversion failed.'
+        //     );
+        // }
+
+        app(DocxToPdfService::class)->convert(
+            $docxPath,
+            $pdfPath
+        );
 
         CompletedApplicationForm::create([
             'application_id' => $application->id,

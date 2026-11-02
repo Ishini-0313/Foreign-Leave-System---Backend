@@ -102,7 +102,7 @@ class Application extends Model
         // 'height',
     ];
 
-    protected $appends = ['is_editable'];
+    protected $appends = ['is_editable', 'office'];
 
     public function getIsEditableAttribute(){
         return $this->status === "Returned";
@@ -140,21 +140,44 @@ class Application extends Model
         return $this->belongsTo(Office::class, 'ministry_id');
     }
 
-    // public function institute(){
-    //     return $this->belongsTo(Office::class, 'institute_id');
-    // }
+    public function department(){
+        return $this->belongsTo(Office::class, 'department_id');
+    }
 
     public function institute(){
-        if ($this->institute_id !== null) {
-            return $this->belongsTo(Office::class, 'institute_id');
-        }
-        elseif ($this->department_id !== null) {
-            return $this->belongsTo(Office::class, 'department_id');
-        }
-        else{
-            return $this->belongsTo(Office::class, 'ministry_id');
-        }
+        return $this->belongsTo(Office::class, 'institute_id');
     }
+
+    // public function office(){
+    //     if ($this->institute_id !== null) {
+    //         return $this->institute_id;
+    //     }
+
+    //     if ($this->department_id !== null) {
+    //         return $this->department_id;
+    //     }
+
+    //     if ($this->ministry_id !== null) {
+    //         return $this->ministry_id;
+    //     }
+    // }
+
+    public function getOfficeAttribute()
+{
+    if ($this->institute_id !== null) {
+        return $this->institute;
+    }
+
+    if ($this->department_id !== null) {
+        return $this->department;
+    }
+
+    if ($this->ministry_id !== null) {
+        return $this->ministry;
+    }
+
+    return null;
+}
 
     public function availableLeaveInfo(){
         return $this->hasOne(available_leave_info::class);
