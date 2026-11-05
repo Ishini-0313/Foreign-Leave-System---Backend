@@ -8,6 +8,7 @@ use App\Models\Application;
 use Carbon\Carbon;
 use Symfony\Component\Process\Process;
 use App\Services\DocxToPdfService;
+use App\Services\ApprovalPdfService;
 
 class ApprovalLetterService
 {
@@ -206,10 +207,20 @@ class ApprovalLetterService
         //     );
         // }
 
-        app(DocxToPdfService::class)->convert(
-            $docxPath,
-            $pdfPath
-        );
+        // app(DocxToPdfService::class)->convert(
+        //     $docxPath,
+        //     $pdfPath
+        // );
+
+        app(ApprovalPdfService::class)->generate([
+            'date' => now()->format('Y.m.d'),
+            'application_no' => $application->application_no,
+            'submitted_date' => $application->created_at?->format('Y-m-d'),
+            'name' => $application->name ?? '',
+            'country' => $application->country ?? '',
+            'leave_from' => $this->formatDate($application->leave_start_date),
+            'leave_to' => $this->formatDate($application->leave_end_date),
+        ], $pdfPath);
         
         // return ApprovalLetter::create([
         //     'application_id' => $application->id,
